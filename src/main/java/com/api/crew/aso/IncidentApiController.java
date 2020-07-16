@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-11T12:40:34.974Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T07:23:35.052Z")
 
 @Controller
 public class IncidentApiController implements IncidentApi {
@@ -45,12 +45,12 @@ public class IncidentApiController implements IncidentApi {
         this.request = request;
     }
 
-    public ResponseEntity<CrewIncidentDetailResponse> getCrewIncidentDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId) {
+    public ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId,@ApiParam(value = "",required=true) @PathVariable("bedReq") String bedReq) {
         String accept = request.getHeader("Accept");
         CrewIncidentDetailResponse crewDetailResponse = null;
         if (accept != null && accept.contains("application/json")) {
             try {
-            	crewDetailResponse = service.getCrewIncidentDetails(crewId, incidentId);
+            	crewDetailResponse = service.getCrewIncidentDetails(crewId, incidentId,bedReq);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<CrewIncidentDetailResponse>(HttpStatus.INTERNAL_SERVER_ERROR);

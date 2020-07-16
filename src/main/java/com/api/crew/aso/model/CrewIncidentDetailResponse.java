@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import com.api.crew.aso.model.CrewDetails;
 import com.api.crew.aso.model.FlightDetails;
+import com.api.crew.aso.model.HrPOCDetails;
 import com.api.crew.aso.model.QuarantineDetails;
+import com.api.crew.aso.model.Symptoms;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,26 +20,24 @@ import javax.validation.constraints.*;
  * CrewIncidentDetailResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-11T12:40:34.974Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T15:48:47.153Z")
 
 public class CrewIncidentDetailResponse   {
-  @JsonProperty("crewId")
-  private Long crewId = null;
+  @JsonProperty("incidentId")
+  private Long incidentId = null;
 
-  @JsonProperty("crewName")
-  private String crewName = null;
+  @JsonProperty("incidentStatus")
+  private String incidentStatus = null;
 
-  @JsonProperty("crewType")
-  private String crewType = null;
+  @JsonProperty("bodyTemperature")
+  private String bodyTemperature = null;
 
-  @JsonProperty("crewEmailId")
-  private String crewEmailId = null;
+  @JsonProperty("symptomList")
+  @Valid
+  private List<Symptoms> symptomList = null;
 
-  @JsonProperty("phoneNumber")
-  private Long phoneNumber = null;
-
-  @JsonProperty("emergencyContactNumber")
-  private Long emergencyContactNumber = null;
+  @JsonProperty("crewDetails")
+  private CrewDetails crewDetails = null;
 
   @JsonProperty("flightDetails")
   private FlightDetails flightDetails = null;
@@ -42,124 +45,117 @@ public class CrewIncidentDetailResponse   {
   @JsonProperty("quarantineCentreDetails")
   private QuarantineDetails quarantineCentreDetails = null;
 
-  public CrewIncidentDetailResponse crewId(Long crewId) {
-    this.crewId = crewId;
+  @JsonProperty("hrPOCDetails")
+  private HrPOCDetails hrPOCDetails = null;
+
+  public CrewIncidentDetailResponse incidentId(Long incidentId) {
+    this.incidentId = incidentId;
     return this;
   }
 
   /**
-   * Get crewId
-   * @return crewId
+   * Get incidentId
+   * @return incidentId
   **/
   @ApiModelProperty(value = "")
 
 
-  public Long getCrewId() {
-    return crewId;
+  public Long getIncidentId() {
+    return incidentId;
   }
 
-  public void setCrewId(Long crewId) {
-    this.crewId = crewId;
+  public void setIncidentId(Long incidentId) {
+    this.incidentId = incidentId;
   }
 
-  public CrewIncidentDetailResponse crewName(String crewName) {
-    this.crewName = crewName;
+  public CrewIncidentDetailResponse incidentStatus(String incidentStatus) {
+    this.incidentStatus = incidentStatus;
     return this;
   }
 
   /**
-   * Get crewName
-   * @return crewName
+   * Get incidentStatus
+   * @return incidentStatus
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getCrewName() {
-    return crewName;
+  public String getIncidentStatus() {
+    return incidentStatus;
   }
 
-  public void setCrewName(String crewName) {
-    this.crewName = crewName;
+  public void setIncidentStatus(String incidentStatus) {
+    this.incidentStatus = incidentStatus;
   }
 
-  public CrewIncidentDetailResponse crewType(String crewType) {
-    this.crewType = crewType;
+  public CrewIncidentDetailResponse bodyTemperature(String bodyTemperature) {
+    this.bodyTemperature = bodyTemperature;
     return this;
   }
 
   /**
-   * Get crewType
-   * @return crewType
+   * Get bodyTemperature
+   * @return bodyTemperature
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getCrewType() {
-    return crewType;
+  public String getBodyTemperature() {
+    return bodyTemperature;
   }
 
-  public void setCrewType(String crewType) {
-    this.crewType = crewType;
+  public void setBodyTemperature(String bodyTemperature) {
+    this.bodyTemperature = bodyTemperature;
   }
 
-  public CrewIncidentDetailResponse crewEmailId(String crewEmailId) {
-    this.crewEmailId = crewEmailId;
+  public CrewIncidentDetailResponse symptomList(List<Symptoms> symptomList) {
+    this.symptomList = symptomList;
+    return this;
+  }
+
+  public CrewIncidentDetailResponse addSymptomListItem(Symptoms symptomListItem) {
+    if (this.symptomList == null) {
+      this.symptomList = new ArrayList<Symptoms>();
+    }
+    this.symptomList.add(symptomListItem);
     return this;
   }
 
   /**
-   * Get crewEmailId
-   * @return crewEmailId
+   * Get symptomList
+   * @return symptomList
   **/
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public String getCrewEmailId() {
-    return crewEmailId;
+  public List<Symptoms> getSymptomList() {
+    return symptomList;
   }
 
-  public void setCrewEmailId(String crewEmailId) {
-    this.crewEmailId = crewEmailId;
+  public void setSymptomList(List<Symptoms> symptomList) {
+    this.symptomList = symptomList;
   }
 
-  public CrewIncidentDetailResponse phoneNumber(Long phoneNumber) {
-    this.phoneNumber = phoneNumber;
+  public CrewIncidentDetailResponse crewDetails(CrewDetails crewDetails) {
+    this.crewDetails = crewDetails;
     return this;
   }
 
   /**
-   * Get phoneNumber
-   * @return phoneNumber
+   * Get crewDetails
+   * @return crewDetails
   **/
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public Long getPhoneNumber() {
-    return phoneNumber;
+  public CrewDetails getCrewDetails() {
+    return crewDetails;
   }
 
-  public void setPhoneNumber(Long phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public CrewIncidentDetailResponse emergencyContactNumber(Long emergencyContactNumber) {
-    this.emergencyContactNumber = emergencyContactNumber;
-    return this;
-  }
-
-  /**
-   * Get emergencyContactNumber
-   * @return emergencyContactNumber
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Long getEmergencyContactNumber() {
-    return emergencyContactNumber;
-  }
-
-  public void setEmergencyContactNumber(Long emergencyContactNumber) {
-    this.emergencyContactNumber = emergencyContactNumber;
+  public void setCrewDetails(CrewDetails crewDetails) {
+    this.crewDetails = crewDetails;
   }
 
   public CrewIncidentDetailResponse flightDetails(FlightDetails flightDetails) {
@@ -204,6 +200,27 @@ public class CrewIncidentDetailResponse   {
     this.quarantineCentreDetails = quarantineCentreDetails;
   }
 
+  public CrewIncidentDetailResponse hrPOCDetails(HrPOCDetails hrPOCDetails) {
+    this.hrPOCDetails = hrPOCDetails;
+    return this;
+  }
+
+  /**
+   * Get hrPOCDetails
+   * @return hrPOCDetails
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public HrPOCDetails getHrPOCDetails() {
+    return hrPOCDetails;
+  }
+
+  public void setHrPOCDetails(HrPOCDetails hrPOCDetails) {
+    this.hrPOCDetails = hrPOCDetails;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -214,19 +231,19 @@ public class CrewIncidentDetailResponse   {
       return false;
     }
     CrewIncidentDetailResponse crewIncidentDetailResponse = (CrewIncidentDetailResponse) o;
-    return Objects.equals(this.crewId, crewIncidentDetailResponse.crewId) &&
-        Objects.equals(this.crewName, crewIncidentDetailResponse.crewName) &&
-        Objects.equals(this.crewType, crewIncidentDetailResponse.crewType) &&
-        Objects.equals(this.crewEmailId, crewIncidentDetailResponse.crewEmailId) &&
-        Objects.equals(this.phoneNumber, crewIncidentDetailResponse.phoneNumber) &&
-        Objects.equals(this.emergencyContactNumber, crewIncidentDetailResponse.emergencyContactNumber) &&
+    return Objects.equals(this.incidentId, crewIncidentDetailResponse.incidentId) &&
+        Objects.equals(this.incidentStatus, crewIncidentDetailResponse.incidentStatus) &&
+        Objects.equals(this.bodyTemperature, crewIncidentDetailResponse.bodyTemperature) &&
+        Objects.equals(this.symptomList, crewIncidentDetailResponse.symptomList) &&
+        Objects.equals(this.crewDetails, crewIncidentDetailResponse.crewDetails) &&
         Objects.equals(this.flightDetails, crewIncidentDetailResponse.flightDetails) &&
-        Objects.equals(this.quarantineCentreDetails, crewIncidentDetailResponse.quarantineCentreDetails);
+        Objects.equals(this.quarantineCentreDetails, crewIncidentDetailResponse.quarantineCentreDetails) &&
+        Objects.equals(this.hrPOCDetails, crewIncidentDetailResponse.hrPOCDetails);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(crewId, crewName, crewType, crewEmailId, phoneNumber, emergencyContactNumber, flightDetails, quarantineCentreDetails);
+    return Objects.hash(incidentId, incidentStatus, bodyTemperature, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
   }
 
   @Override
@@ -234,14 +251,14 @@ public class CrewIncidentDetailResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class CrewIncidentDetailResponse {\n");
     
-    sb.append("    crewId: ").append(toIndentedString(crewId)).append("\n");
-    sb.append("    crewName: ").append(toIndentedString(crewName)).append("\n");
-    sb.append("    crewType: ").append(toIndentedString(crewType)).append("\n");
-    sb.append("    crewEmailId: ").append(toIndentedString(crewEmailId)).append("\n");
-    sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
-    sb.append("    emergencyContactNumber: ").append(toIndentedString(emergencyContactNumber)).append("\n");
+    sb.append("    incidentId: ").append(toIndentedString(incidentId)).append("\n");
+    sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
+    sb.append("    bodyTemperature: ").append(toIndentedString(bodyTemperature)).append("\n");
+    sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
+    sb.append("    crewDetails: ").append(toIndentedString(crewDetails)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
     sb.append("    quarantineCentreDetails: ").append(toIndentedString(quarantineCentreDetails)).append("\n");
+    sb.append("    hrPOCDetails: ").append(toIndentedString(hrPOCDetails)).append("\n");
     sb.append("}");
     return sb.toString();
   }

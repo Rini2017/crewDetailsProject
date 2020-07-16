@@ -1,5 +1,7 @@
 package com.api.crew.aso.dto;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,10 +29,20 @@ public class CrewIncidentDto {
 	private Long phoneNumber;
 	@Column(name="emergency_contact_no")
 	private Long emergencyContactNumber;
+	@Column(name="address_to_contact")
+	private String addressToContact;
 	@Column(name="body_temperature")
 	private String bodyTemperature;
-	@Column(name="symptoms")
-	private String symptoms;
+	@Column(name="incident_status")
+	private String incidentStatus;
+	@Column(name="symptom_fever")
+	private String symptomFever;
+	@Column(name="symptom_cold")
+	private String symptomCold;
+	@Column(name="symptom_cough")
+	private String symptomCough;
+	@Column(name="symptom_breath")
+	private String symptomBreath;
 	@Column(name="arrival_station_code")
 	private String arrivalStationCode;
 	@Column(name="carrier_code")
@@ -41,6 +53,10 @@ public class CrewIncidentDto {
 	private String flightNumber;
 	@Column(name="flight_origin_date")
 	private String flightOriginDate;
+	@Column(name="creation_date")
+	private Timestamp creationDate;
+	@Column(name="last_update_date")
+	private Timestamp lastUpdateDate;
 	
 	
 	public Integer getIncidentId() {
@@ -91,12 +107,7 @@ public class CrewIncidentDto {
 	public void setBodyTemperature(String bodyTemperature) {
 		this.bodyTemperature = bodyTemperature;
 	}
-	public String getSymptoms() {
-		return symptoms;
-	}
-	public void setSymptoms(String symptoms) {
-		this.symptoms = symptoms;
-	}
+	
 	public String getArrivalStationCode() {
 		return arrivalStationCode;
 	}
@@ -126,6 +137,54 @@ public class CrewIncidentDto {
 	}
 	public void setFlightOriginDate(String flightOriginDate) {
 		this.flightOriginDate = flightOriginDate;
+	}
+	public String getIncidentStatus() {
+		return incidentStatus;
+	}
+	public void setIncidentStatus(String incidentStatus) {
+		this.incidentStatus = incidentStatus;
+	}
+	public String getSymptomFever() {
+		return symptomFever;
+	}
+	public void setSymptomFever(String symptomFever) {
+		this.symptomFever = symptomFever;
+	}
+	public String getSymptomCold() {
+		return symptomCold;
+	}
+	public void setSymptomCold(String symptomCold) {
+		this.symptomCold = symptomCold;
+	}
+	public String getSymptomCough() {
+		return symptomCough;
+	}
+	public void setSymptomCough(String symptomCough) {
+		this.symptomCough = symptomCough;
+	}
+	public String getSymptomBreath() {
+		return symptomBreath;
+	}
+	public void setSymptomBreath(String symptomBreath) {
+		this.symptomBreath = symptomBreath;
+	}
+	public Timestamp getCreationDate() {
+		return creationDate;
+	}
+	public void setCreationDate(Timestamp creationDate) {
+		this.creationDate = creationDate;
+	}
+	public Timestamp getLastUpdateDate() {
+		return lastUpdateDate;
+	}
+	public void setLastUpdateDate(Timestamp lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
+	}
+	public String getAddressToContact() {
+		return addressToContact;
+	}
+	public void setAddressToContact(String addressToContact) {
+		this.addressToContact = addressToContact;
 	}
 	
 	

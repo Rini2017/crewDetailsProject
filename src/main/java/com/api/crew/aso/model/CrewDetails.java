@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * CrewDetails
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-09T07:58:16.858Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T07:23:35.052Z")
 
 public class CrewDetails   {
   @JsonProperty("crewId")
@@ -21,6 +21,12 @@ public class CrewDetails   {
 
   @JsonProperty("crewName")
   private String crewName = null;
+
+  @JsonProperty("crewType")
+  private String crewType = null;
+
+  @JsonProperty("crewEmailId")
+  private String crewEmailId = null;
 
   @JsonProperty("flightNumber")
   private String flightNumber = null;
@@ -72,6 +78,46 @@ public class CrewDetails   {
 
   public void setCrewName(String crewName) {
     this.crewName = crewName;
+  }
+
+  public CrewDetails crewType(String crewType) {
+    this.crewType = crewType;
+    return this;
+  }
+
+  /**
+   * Get crewType
+   * @return crewType
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getCrewType() {
+    return crewType;
+  }
+
+  public void setCrewType(String crewType) {
+    this.crewType = crewType;
+  }
+
+  public CrewDetails crewEmailId(String crewEmailId) {
+    this.crewEmailId = crewEmailId;
+    return this;
+  }
+
+  /**
+   * Get crewEmailId
+   * @return crewEmailId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getCrewEmailId() {
+    return crewEmailId;
+  }
+
+  public void setCrewEmailId(String crewEmailId) {
+    this.crewEmailId = crewEmailId;
   }
 
   public CrewDetails flightNumber(String flightNumber) {
@@ -166,6 +212,8 @@ public class CrewDetails   {
     CrewDetails crewDetails = (CrewDetails) o;
     return Objects.equals(this.crewId, crewDetails.crewId) &&
         Objects.equals(this.crewName, crewDetails.crewName) &&
+        Objects.equals(this.crewType, crewDetails.crewType) &&
+        Objects.equals(this.crewEmailId, crewDetails.crewEmailId) &&
         Objects.equals(this.flightNumber, crewDetails.flightNumber) &&
         Objects.equals(this.phoneNumber, crewDetails.phoneNumber) &&
         Objects.equals(this.emergencyContactNumber, crewDetails.emergencyContactNumber) &&
@@ -174,7 +222,7 @@ public class CrewDetails   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(crewId, crewName, flightNumber, phoneNumber, emergencyContactNumber, addressToContact);
+    return Objects.hash(crewId, crewName, crewType, crewEmailId, flightNumber, phoneNumber, emergencyContactNumber, addressToContact);
   }
 
   @Override
@@ -184,6 +232,8 @@ public class CrewDetails   {
     
     sb.append("    crewId: ").append(toIndentedString(crewId)).append("\n");
     sb.append("    crewName: ").append(toIndentedString(crewName)).append("\n");
+    sb.append("    crewType: ").append(toIndentedString(crewType)).append("\n");
+    sb.append("    crewEmailId: ").append(toIndentedString(crewEmailId)).append("\n");
     sb.append("    flightNumber: ").append(toIndentedString(flightNumber)).append("\n");
     sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
     sb.append("    emergencyContactNumber: ").append(toIndentedString(emergencyContactNumber)).append("\n");

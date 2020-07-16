@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-11T12:40:34.974Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T07:23:35.052Z")
 
 @Api(value = "incident", description = "the incident API")
 @RequestMapping(value = "/v2")
@@ -35,10 +35,10 @@ public interface IncidentApi {
         @ApiResponse(code = 200, message = "successful operation", response = CrewIncidentDetailResponse.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Crew not found") })
-    @RequestMapping(value = "/incident/crew/retrieve{crewId},{incidentId}",
+    @RequestMapping(value = "/incident/crew/retrieve{crewId},{incidentId},{bedReq}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<CrewIncidentDetailResponse> getCrewIncidentDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId);
+    ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId,@ApiParam(value = "",required=true) @PathVariable("bedReq") String bedReq);
 
 
     @ApiOperation(value = "", nickname = "notificationEmail", notes = "", response = NotificationResponse.class, tags={ "notificationDetail", })

@@ -34,8 +34,6 @@ public class CrewRequestUpdate   {
   @JsonProperty("employeeIdToReplace")
   private Long employeeIdToReplace = null;
   
-  @JsonProperty("employeeIdReplaceWith")
-  private Long employeeIdReplaceWith = null;
 
   public CrewRequestUpdate arrivalStationCode(String arrivalStationCode) {
     this.arrivalStationCode = arrivalStationCode;
@@ -142,10 +140,6 @@ public class CrewRequestUpdate   {
     return this;
   }
   
-  public CrewRequestUpdate employeeIdReplaceWith(Long employeeIdReplaceWith) {
-	    this.employeeIdReplaceWith = employeeIdReplaceWith;
-	    return this;
-  }
 
  
 
@@ -164,13 +158,12 @@ public class CrewRequestUpdate   {
         Objects.equals(this.departureStationCode, crewRequestUpdate.departureStationCode) &&
         Objects.equals(this.flightNumber, crewRequestUpdate.flightNumber) &&
         Objects.equals(this.flightOriginDate, crewRequestUpdate.flightOriginDate) &&
-        Objects.equals(this.employeeIdToReplace, crewRequestUpdate.employeeIdToReplace) &&
-    	Objects.equals(this.employeeIdReplaceWith, crewRequestUpdate.employeeIdReplaceWith);
+        Objects.equals(this.employeeIdToReplace, crewRequestUpdate.employeeIdToReplace);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(arrivalStationCode, carrierCode, departureStationCode, flightNumber, flightOriginDate, employeeIdToReplace,employeeIdReplaceWith );
+    return Objects.hash(arrivalStationCode, carrierCode, departureStationCode, flightNumber, flightOriginDate, employeeIdToReplace );
   }
 
   @Override
@@ -184,7 +177,6 @@ public class CrewRequestUpdate   {
     sb.append("    flightNumber: ").append(toIndentedString(flightNumber)).append("\n");
     sb.append("    flightOriginDate: ").append(toIndentedString(flightOriginDate)).append("\n");
     sb.append("    employeeIdToReplace: ").append(toIndentedString(employeeIdToReplace)).append("\n");
-    sb.append("    employeeIdReplaceWith: ").append(toIndentedString(employeeIdReplaceWith)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -208,12 +200,5 @@ public void setEmployeeIdToReplace(Long employeeIdToReplace) {
 	this.employeeIdToReplace = employeeIdToReplace;
 }
 
-public Long getEmployeeIdReplaceWith() {
-	return employeeIdReplaceWith;
-}
-
-public void setEmployeeIdReplaceWith(Long employeeIdReplaceWith) {
-	this.employeeIdReplaceWith = employeeIdReplaceWith;
-}
 }
 

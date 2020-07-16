@@ -141,6 +141,8 @@ public class ASOServiceImpl implements ASOService {
 
 	@Override
 	public CrewDetails updateCrew(CrewRequestUpdate request) throws IOException {
+		//fetch EmployeeIdReplaceWith
+		String employeeIdReplaceWith = invokeCrewRotarySvcReplace(request);
 		//Update in Crew Rotary Svc
 		CSVReader reader = null;  
     	String csvFile = "src/main/java/com/api/crew/aso/service/crew&rotarysvc/Crew_RotarySvc.csv";
@@ -153,7 +155,7 @@ public class ASOServiceImpl implements ASOService {
 	            String[] strArray = csvBody.get(i);
 	            for(int j=0; j<strArray.length; j++){
 	                if(strArray[j].equalsIgnoreCase(String.valueOf(request.getEmployeeIdToReplace()))){ //String to be replaced
-	                    csvBody.get(i)[j] = String.valueOf(request.getEmployeeIdReplaceWith()); //Target replacement
+	                    csvBody.get(i)[j] = String.valueOf(employeeIdReplaceWith); //Target replacement
 	                    break;
 	                }
 	            }
@@ -186,7 +188,7 @@ public class ASOServiceImpl implements ASOService {
 	            	Long phoneNumber = Long.parseLong(crewDetailList[3]);
 	            	Long emergencyContactNumber = Long.parseLong(crewDetailList[4]);
 	            	String addressToContact = crewDetailList[5];
-	            	if(crewIdHS.equals(request.getEmployeeIdReplaceWith())){
+	            	if(crewIdHS.equals(Long.parseLong(employeeIdReplaceWith))){
 	            		CrewDetails crewDetails = new CrewDetails();
 	            		crewDetails.setCrewId(crewIdHS);
 	            		crewDetails.setCrewName(crewName);
@@ -208,6 +210,63 @@ public class ASOServiceImpl implements ASOService {
         
        
         return null;
+	}
+
+	private String  invokeCrewRotarySvcReplace(CrewRequestUpdate request) {
+		
+		CSVReader reader = null;  
+    	String csvFile = "src/main/java/com/api/crew/aso/service/crew&rotarysvc/Crew_RotarySvc_Replace.csv";
+        String line = "";
+        String cvsSplitBy = ",";
+        List<CrewMemberDetails> crewMemberList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            while ((line = br.readLine()) != null) {
+            	if(!line.contains("FlightNumber")){
+	                // use comma as separator
+	                String[] flightCrewDetails = line.split(cvsSplitBy);
+	                
+	                FlightCrewDetails flightCrewMember =  flightCrewDetail(flightCrewDetails,request);
+	                if(flightCrewMember != null){
+		                CrewMemberDetails crewMember = new CrewMemberDetails();
+		                crewMember.setEmployeeId(flightCrewMember.getEmployeeId());
+		                crewMember.setBaseCode(flightCrewMember.getBaseCode());
+		                crewMember.setRoleCode(flightCrewMember.getRoleCode());
+		                crewMember.setRotationBeginDate(flightCrewMember.getRotationBeginDate());
+		                crewMemberList.add(crewMember);
+	                }
+            	}
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return crewMemberList.get(0).getEmployeeId();
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	private FlightCrewDetails flightCrewDetail(String[] flightCrewDetails,CrewRequestUpdate request) {
+		// TODO Auto-generated method stub
+    	String flightNo = flightCrewDetails[0];
+    	String flightDate = flightCrewDetails[1];
+    	String departureAirport =flightCrewDetails[2];
+    	String arrivalAirport = flightCrewDetails[3];
+    	String carrierCode = flightCrewDetails[4];
+    	String employeeId = flightCrewDetails[5];
+    	String roleCode = flightCrewDetails[6];
+    	String baseCode = flightCrewDetails[7];
+    	String rotationBeginDate = flightCrewDetails[8];
+    	if(request.getArrivalStationCode().equalsIgnoreCase(arrivalAirport) 
+    			&& request.getDepartureStationCode().equalsIgnoreCase(departureAirport) && 
+    			request.getCarrierCode().equalsIgnoreCase(carrierCode) &&
+    			request.getFlightNumber().equalsIgnoreCase(flightNo) &&
+    			request.getFlightOriginDate().equalsIgnoreCase(flightDate)){
+			return new FlightCrewDetails(flightNo,flightDate,departureAirport,arrivalAirport,
+					carrierCode,employeeId,roleCode,baseCode,rotationBeginDate);
+    	}
+		return null;
 	}
 
 }

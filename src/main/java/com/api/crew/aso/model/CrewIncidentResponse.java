@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import com.api.crew.aso.model.Incident;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -13,93 +16,40 @@ import javax.validation.constraints.*;
  * CrewIncidentResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-11T12:40:34.974Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T10:42:04.981Z")
 
 public class CrewIncidentResponse   {
-  @JsonProperty("crewId")
-  private Long crewId = null;
-  
-  @JsonProperty("incidentId")
-  private Integer incidentId = null;
+  @JsonProperty("incidentList")
+  @Valid
+  private List<Incident> incidentList = null;
 
-  @JsonProperty("statusCode")
-  private String statusCode = null;
+  public CrewIncidentResponse incidentList(List<Incident> incidentList) {
+    this.incidentList = incidentList;
+    return this;
+  }
 
-  @JsonProperty("message")
-  private String message = null;
-
-  public CrewIncidentResponse crewId(Long crewId) {
-    this.crewId = crewId;
+  public CrewIncidentResponse addIncidentListItem(Incident incidentListItem) {
+    if (this.incidentList == null) {
+      this.incidentList = new ArrayList<Incident>();
+    }
+    this.incidentList.add(incidentListItem);
     return this;
   }
 
   /**
-   * Get crewId
-   * @return crewId
+   * Get incidentList
+   * @return incidentList
   **/
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public Long getCrewId() {
-    return crewId;
+  public List<Incident> getIncidentList() {
+    return incidentList;
   }
 
-  public void setCrewId(Long crewId) {
-    this.crewId = crewId;
-  }
-  
-  /**
-   * Get incidentId
-   * @return incidentId
-  **/
-  @ApiModelProperty(value = "")
-  
-  public Integer getIncidentId() {
-		return incidentId;
-	}
-
-	public void setIncidentId(Integer incidentId) {
-		this.incidentId = incidentId;
-	}
-
-  public CrewIncidentResponse statusCode(String statusCode) {
-    this.statusCode = statusCode;
-    return this;
-  }
-
-  /**
-   * Get statusCode
-   * @return statusCode
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getStatusCode() {
-    return statusCode;
-  }
-
-  public void setStatusCode(String statusCode) {
-    this.statusCode = statusCode;
-  }
-
-  public CrewIncidentResponse message(String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Get message
-   * @return message
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
+  public void setIncidentList(List<Incident> incidentList) {
+    this.incidentList = incidentList;
   }
 
 
@@ -112,15 +62,12 @@ public class CrewIncidentResponse   {
       return false;
     }
     CrewIncidentResponse crewIncidentResponse = (CrewIncidentResponse) o;
-    return Objects.equals(this.crewId, crewIncidentResponse.crewId) &&
-    		Objects.equals(this.incidentId, crewIncidentResponse.incidentId) &&
-        Objects.equals(this.statusCode, crewIncidentResponse.statusCode) &&
-        Objects.equals(this.message, crewIncidentResponse.message);
+    return Objects.equals(this.incidentList, crewIncidentResponse.incidentList);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(crewId, statusCode, message);
+    return Objects.hash(incidentList);
   }
 
   @Override
@@ -128,10 +75,7 @@ public class CrewIncidentResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class CrewIncidentResponse {\n");
     
-    sb.append("    crewId: ").append(toIndentedString(crewId)).append("\n");
-    sb.append("    incidentId: ").append(toIndentedString(incidentId)).append("\n");
-    sb.append("    statusCode: ").append(toIndentedString(statusCode)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    incidentList: ").append(toIndentedString(incidentList)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -146,7 +90,5 @@ public class CrewIncidentResponse   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
-
 }
 

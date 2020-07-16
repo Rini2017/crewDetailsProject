@@ -9,7 +9,7 @@ import com.api.crew.aso.model.NotificationResponse;
 
 public interface IncidentService {
 	
-	public CrewIncidentDetailResponse getCrewIncidentDetails( Long crewId,Long incidentId);
+	public CrewIncidentDetailResponse getCrewIncidentDetails( Long crewId,Long incidentId, String bedReq);
 	public NotificationResponse notificationEmail( Long crewId,Long incidentId);
 	public CrewIncidentResponse saveCrewIncidentDetail(CrewIncidentRequest request);
 
