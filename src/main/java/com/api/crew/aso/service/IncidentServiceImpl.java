@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.crew.aso.dto.CrewIncidentDto;
 import com.api.crew.aso.dto.HRContactDto;
@@ -28,6 +29,7 @@ import com.api.crew.aso.repository.HRContactDao;
 import com.api.crew.aso.repository.QuarantineDao;
 
 @Service
+@Transactional
 public class IncidentServiceImpl implements IncidentService{
 	
 	@Autowired
@@ -103,7 +105,6 @@ public class IncidentServiceImpl implements IncidentService{
 		crewDetailsResponse.setAddressToContact(crewIncidentDto.getAddressToContact());
 		FlightDetails flightDetails = new FlightDetails();
 		flightDetails.setArrivalStationCode(crewIncidentDto.getArrivalStationCode());
-		flightDetails.setCarrierCode(crewIncidentDto.getCarrierCode());
 		flightDetails.setDepartureStationCode(crewIncidentDto.getDepartureStationCode());
 		flightDetails.setFlightNumber(crewIncidentDto.getFlightNumber());
 		flightDetails.setFlightOriginDate(crewIncidentDto.getFlightOriginDate());
@@ -181,8 +182,7 @@ public class IncidentServiceImpl implements IncidentService{
 					}
 				});
 				
-				dto.setArrivalStationCode(flightDetails.getArrivalStationCode());	
-				dto.setCarrierCode(flightDetails.getCarrierCode());					
+				dto.setArrivalStationCode(flightDetails.getArrivalStationCode());					
 				dto.setDepartureStationCode(flightDetails.getDepartureStationCode());			
 				dto.setFlightNumber(flightDetails.getFlightNumber());
 				dto.setFlightOriginDate(flightDetails.getFlightOriginDate());
@@ -213,8 +213,7 @@ public class IncidentServiceImpl implements IncidentService{
 					}
 				});
 				
-				newDto.setArrivalStationCode(flightDetails.getArrivalStationCode());	
-				newDto.setCarrierCode(flightDetails.getCarrierCode());					
+				newDto.setArrivalStationCode(flightDetails.getArrivalStationCode());					
 				newDto.setDepartureStationCode(flightDetails.getDepartureStationCode());			
 				newDto.setFlightNumber(flightDetails.getFlightNumber());
 				newDto.setFlightOriginDate(flightDetails.getFlightOriginDate());
@@ -298,7 +297,6 @@ public class IncidentServiceImpl implements IncidentService{
 				incident.setCrewDetails(crewDetails);
 				flightDetailsRes.setArrivalStationCode(crewIncident.getArrivalStationCode());
 				flightDetailsRes.setDepartureStationCode(crewIncident.getDepartureStationCode());
-				flightDetailsRes.setCarrierCode(crewIncident.getCarrierCode());
 				flightDetailsRes.setFlightNumber(crewIncident.getFlightNumber());
 				flightDetailsRes.setFlightOriginDate(crewIncident.getFlightOriginDate());
 				incident.setFlightDetails(flightDetailsRes);
