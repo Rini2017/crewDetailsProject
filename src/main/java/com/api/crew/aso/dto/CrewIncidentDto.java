@@ -45,8 +45,6 @@ public class CrewIncidentDto {
 	private String symptomBreath;
 	@Column(name="arrival_station_code")
 	private String arrivalStationCode;
-	@Column(name="carrier_code")
-	private String carrierCode;
 	@Column(name="departure_station_code")
 	private String departureStationCode;
 	@Column(name="flight_number")
@@ -113,12 +111,6 @@ public class CrewIncidentDto {
 	}
 	public void setArrivalStationCode(String arrivalStationCode) {
 		this.arrivalStationCode = arrivalStationCode;
-	}
-	public String getCarrierCode() {
-		return carrierCode;
-	}
-	public void setCarrierCode(String carrierCode) {
-		this.carrierCode = carrierCode;
 	}
 	public String getDepartureStationCode() {
 		return departureStationCode;

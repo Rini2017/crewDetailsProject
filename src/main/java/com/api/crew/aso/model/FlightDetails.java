@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * FlightDetails
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-11T12:40:34.974Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-20T07:34:50.119Z")
 
 public class FlightDetails   {
   @JsonProperty("flightNumber")
@@ -27,9 +27,6 @@ public class FlightDetails   {
 
   @JsonProperty("departureStationCode")
   private String departureStationCode = null;
-
-  @JsonProperty("carrierCode")
-  private String carrierCode = null;
 
   public FlightDetails flightNumber(String flightNumber) {
     this.flightNumber = flightNumber;
@@ -111,26 +108,6 @@ public class FlightDetails   {
     this.departureStationCode = departureStationCode;
   }
 
-  public FlightDetails carrierCode(String carrierCode) {
-    this.carrierCode = carrierCode;
-    return this;
-  }
-
-  /**
-   * Get carrierCode
-   * @return carrierCode
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getCarrierCode() {
-    return carrierCode;
-  }
-
-  public void setCarrierCode(String carrierCode) {
-    this.carrierCode = carrierCode;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -144,13 +121,12 @@ public class FlightDetails   {
     return Objects.equals(this.flightNumber, flightDetails.flightNumber) &&
         Objects.equals(this.flightOriginDate, flightDetails.flightOriginDate) &&
         Objects.equals(this.arrivalStationCode, flightDetails.arrivalStationCode) &&
-        Objects.equals(this.departureStationCode, flightDetails.departureStationCode) &&
-        Objects.equals(this.carrierCode, flightDetails.carrierCode);
+        Objects.equals(this.departureStationCode, flightDetails.departureStationCode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(flightNumber, flightOriginDate, arrivalStationCode, departureStationCode, carrierCode);
+    return Objects.hash(flightNumber, flightOriginDate, arrivalStationCode, departureStationCode);
   }
 
   @Override
@@ -162,7 +138,6 @@ public class FlightDetails   {
     sb.append("    flightOriginDate: ").append(toIndentedString(flightOriginDate)).append("\n");
     sb.append("    arrivalStationCode: ").append(toIndentedString(arrivalStationCode)).append("\n");
     sb.append("    departureStationCode: ").append(toIndentedString(departureStationCode)).append("\n");
-    sb.append("    carrierCode: ").append(toIndentedString(carrierCode)).append("\n");
     sb.append("}");
     return sb.toString();
   }
