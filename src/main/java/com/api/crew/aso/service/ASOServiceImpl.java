@@ -12,10 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.api.crew.aso.model.CrewDetails;
+import com.api.crew.aso.model.CrewDetailsResponse;
 import com.api.crew.aso.model.CrewMemberDetails;
 import com.api.crew.aso.model.CrewRequest;
 import com.api.crew.aso.model.CrewRequestUpdate;
 import com.api.crew.aso.model.FlightCrewDetails;
+import com.api.crew.aso.model.HrPOCDetails;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -27,9 +29,9 @@ public class ASOServiceImpl implements ASOService {
 	 * @see com.api.crew.aso.service.ASOService#getCrewDetails(java.lang.Long)
 	 */
 	@Override
-	public CrewDetails getCrewDetails(Long crewId) {
-		CrewDetails crewDetails = invokeHSSvc(crewId);
-		return crewDetails;
+	public CrewDetailsResponse getCrewDetails(Long crewId) {
+		CrewDetailsResponse crewDetailsRes = invokeHSSvc(crewId);
+		return crewDetailsRes;
 	}
 	
 	/*
@@ -42,7 +44,7 @@ public class ASOServiceImpl implements ASOService {
 		return crewMemberList;
 	}
 
-	private CrewDetails invokeHSSvc(Long crewId) {
+	private CrewDetailsResponse invokeHSSvc(Long crewId) {
 		
 		CSVReader reader = null;  
     	String csvFile = "src/main/java/com/api/crew/aso/service/h&ssvc/H&SSvc.csv";
@@ -56,19 +58,33 @@ public class ASOServiceImpl implements ASOService {
 	                String[] crewDetailList = line.split(cvsSplitBy);
 	                Long crewIdHS = Long.parseLong(crewDetailList[0]);
 	            	String crewName = crewDetailList[1];
-	            	String flightNumber =crewDetailList[2];
-	            	Long phoneNumber = Long.parseLong(crewDetailList[3]);
-	            	Long emergencyContactNumber = Long.parseLong(crewDetailList[4]);
-	            	String addressToContact = crewDetailList[5];
+	            	String crewType = crewDetailList[2];
+	            	String crewEmailId = crewDetailList[3];
+	            	String flightNumber =crewDetailList[4];
+	            	Long phoneNumber = Long.parseLong(crewDetailList[5]);
+	            	Long emergencyContactNumber = Long.parseLong(crewDetailList[6]);
+	            	String addressToContact = crewDetailList[7];
+	            	String hrPOCEmailId = crewDetailList[8];
+	            	String hrPOCName = crewDetailList[9];
+	            	String hrPOCPhoneNo = crewDetailList[10];
 	            	if(crewIdHS.equals(crewId)){
+	            		CrewDetailsResponse res = new CrewDetailsResponse();
 	            		CrewDetails crewDetails = new CrewDetails();
 	            		crewDetails.setCrewId(crewIdHS);
 	            		crewDetails.setCrewName(crewName);
+	            		crewDetails.setCrewType(crewType);
+	            		crewDetails.setCrewEmailId(crewEmailId);
 	            		crewDetails.setFlightNumber(flightNumber);
 	            		crewDetails.setEmergencyContactNumber(emergencyContactNumber);
 	            		crewDetails.setPhoneNumber(phoneNumber);
 	            		crewDetails.setAddressToContact(addressToContact);
-	            		return crewDetails;
+	            		res.setCrewDetails(crewDetails);
+	            		HrPOCDetails hrPOCDetails = new HrPOCDetails();
+	            		hrPOCDetails.setHrPOCEmailId(hrPOCEmailId);
+	            		hrPOCDetails.setHrPOCName(hrPOCName);
+	            		hrPOCDetails.setHrPOCPhoneNo(hrPOCPhoneNo);
+	            		res.setHrPOCDetails(hrPOCDetails);
+	            		return res;
 	            		
 	            	}
 	                
@@ -123,24 +139,22 @@ public class ASOServiceImpl implements ASOService {
     	String flightDate = flightCrewDetails[1];
     	String departureAirport =flightCrewDetails[2];
     	String arrivalAirport = flightCrewDetails[3];
-    	String carrierCode = flightCrewDetails[4];
-    	String employeeId = flightCrewDetails[5];
-    	String roleCode = flightCrewDetails[6];
-    	String baseCode = flightCrewDetails[7];
-    	String rotationBeginDate = flightCrewDetails[8];
+    	String employeeId = flightCrewDetails[4];
+    	String roleCode = flightCrewDetails[5];
+    	String baseCode = flightCrewDetails[6];
+    	String rotationBeginDate = flightCrewDetails[7];
     	if(request.getArrivalStationCode().equalsIgnoreCase(arrivalAirport) 
     			&& request.getDepartureStationCode().equalsIgnoreCase(departureAirport) && 
-    			request.getCarrierCode().equalsIgnoreCase(carrierCode) &&
     			request.getFlightNumber().equalsIgnoreCase(flightNo) &&
     			request.getFlightOriginDate().equalsIgnoreCase(flightDate)){
 			return new FlightCrewDetails(flightNo,flightDate,departureAirport,arrivalAirport,
-					carrierCode,employeeId,roleCode,baseCode,rotationBeginDate);
+					employeeId,roleCode,baseCode,rotationBeginDate);
     	}
 		return null;
 	}
 
 	@Override
-	public CrewDetails updateCrew(CrewRequestUpdate request) throws IOException {
+	public CrewDetailsResponse updateCrew(CrewRequestUpdate request) throws IOException {
 		//fetch EmployeeIdReplaceWith
 		String employeeIdReplaceWith = invokeCrewRotarySvcReplace(request);
 		//Update in Crew Rotary Svc
@@ -184,19 +198,33 @@ public class ASOServiceImpl implements ASOService {
 	                String[] crewDetailList = line.split(cvsSplitBy);
 	                Long crewIdHS = Long.parseLong(crewDetailList[0]);
 	            	String crewName = crewDetailList[1];
-	            	String flightNumber =crewDetailList[2];
-	            	Long phoneNumber = Long.parseLong(crewDetailList[3]);
-	            	Long emergencyContactNumber = Long.parseLong(crewDetailList[4]);
-	            	String addressToContact = crewDetailList[5];
+	            	String crewType = crewDetailList[2];
+	            	String crewEmailId = crewDetailList[3];
+	            	String flightNumber =crewDetailList[4];
+	            	Long phoneNumber = Long.parseLong(crewDetailList[5]);
+	            	Long emergencyContactNumber = Long.parseLong(crewDetailList[6]);
+	            	String addressToContact = crewDetailList[7];
+	            	String hrPOCEmailId = crewDetailList[8];
+	            	String hrPOCName = crewDetailList[9];
+	            	String hrPOCPhoneNo = crewDetailList[10];
 	            	if(crewIdHS.equals(Long.parseLong(employeeIdReplaceWith))){
+	            		CrewDetailsResponse res = new CrewDetailsResponse();
 	            		CrewDetails crewDetails = new CrewDetails();
 	            		crewDetails.setCrewId(crewIdHS);
 	            		crewDetails.setCrewName(crewName);
+	            		crewDetails.setCrewType(crewType);
+	            		crewDetails.setCrewEmailId(crewEmailId);
 	            		crewDetails.setFlightNumber(flightNumber);
 	            		crewDetails.setEmergencyContactNumber(emergencyContactNumber);
 	            		crewDetails.setPhoneNumber(phoneNumber);
 	            		crewDetails.setAddressToContact(addressToContact);
-	            		return crewDetails;
+	            		res.setCrewDetails(crewDetails);
+	            		HrPOCDetails hrPOCDetails = new HrPOCDetails();
+	            		hrPOCDetails.setHrPOCEmailId(hrPOCEmailId);
+	            		hrPOCDetails.setHrPOCName(hrPOCName);
+	            		hrPOCDetails.setHrPOCPhoneNo(hrPOCPhoneNo);
+	            		res.setHrPOCDetails(hrPOCDetails);
+	            		return res;
 	            		
 	            	}
 	                
@@ -253,18 +281,16 @@ public class ASOServiceImpl implements ASOService {
     	String flightDate = flightCrewDetails[1];
     	String departureAirport =flightCrewDetails[2];
     	String arrivalAirport = flightCrewDetails[3];
-    	String carrierCode = flightCrewDetails[4];
-    	String employeeId = flightCrewDetails[5];
-    	String roleCode = flightCrewDetails[6];
-    	String baseCode = flightCrewDetails[7];
-    	String rotationBeginDate = flightCrewDetails[8];
+    	String employeeId = flightCrewDetails[4];
+    	String roleCode = flightCrewDetails[5];
+    	String baseCode = flightCrewDetails[6];
+    	String rotationBeginDate = flightCrewDetails[7];
     	if(request.getArrivalStationCode().equalsIgnoreCase(arrivalAirport) 
     			&& request.getDepartureStationCode().equalsIgnoreCase(departureAirport) && 
-    			request.getCarrierCode().equalsIgnoreCase(carrierCode) &&
     			request.getFlightNumber().equalsIgnoreCase(flightNo) &&
     			request.getFlightOriginDate().equalsIgnoreCase(flightDate)){
 			return new FlightCrewDetails(flightNo,flightDate,departureAirport,arrivalAirport,
-					carrierCode,employeeId,roleCode,baseCode,rotationBeginDate);
+					employeeId,roleCode,baseCode,rotationBeginDate);
     	}
 		return null;
 	}

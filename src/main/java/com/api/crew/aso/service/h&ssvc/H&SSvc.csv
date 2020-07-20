@@ -1,27 +1,27 @@
-CrewId,CrewName,FlightNo,PhoneNo,EmergencyContactNo,AddressToContact
-220678,Ajit S,AI0678,2232,2232,"Flat No. 2A, Rashbihari"
-220638,Amit B,AI0678,3345,3345,"Flat No.3C, NSC Bose "
-220618,Aditya B,AI0678,6678,6678,"Flat No.5B, Gandhi road"
-220648,Srikanth C,AI0678,9922,9922,"Flat No. 2A, Rashbihari"
-262225,Rima D,AI2267,8876,8876,"Flat No.3C, NSC Bose "
-261115,Rishil B,AI2267,6678,6678,"Flat No.5B, Gandhi road"
-211167,Ridhi B,None,6679,6679,"Flat No.5B, Gandhi road"
-263335,Ankita D,AI2267,4456,4456,"Flat No. 2A, Rashbihari"
-262345,Abhijit J,AI2267,2234,2234,"Flat No.3C, NSC Bose "
-262472,Simran K,AI3345,3367,3367,"Flat No.5B, Gandhi road"
-263367,Sohini R,AI3345,7788,7788,"Flat No. 2A, Rashbihari"
-272745,Reshma D,AI3345,9987,9987,"Flat No.3C, NSC Bose "
-220678,Ankit J,AI3345,3456,3456,"Flat No.5B, Gandhi road"
-339678,Swaroop C,AI5567,2678,2678,"Flat No. 2A, Rashbihari"
-306785,Abdul R,AI5567,7890,7890,"Flat No.3C, NSC Bose "
-456789,Sangeeta B,AI5567,2267,2267,"Flat No.5B, Gandhi road"
-220679,Raja B,AI0678,3365,3365,"Flat No.5B, Gandhi road"
-220676,Raja C,AI0678,3365,3365,"Flat No.5B, Gandhi road"
-220675,Raja D,AI0678,3365,3365,"Flat No.5B, Gandhi road"
-220674,Raja H,AI0678,3365,3365,"Flat No.5B, Gandhi road"
-220673,Shraddha R,AI2267,3365,3365,"Flat No.5B, Gandhi road"
-220672,Shraddha G,AI2267,3365,3365,"Flat No.5B, Gandhi road"
-220671,Shraddha H,AI2267,3365,3365,"Flat No.5B, Gandhi road"
-220670,Vinay A,AI2267,3365,3365,"Flat No.5B, Gandhi road"
-320678,Vinay B,AI3345,3365,3365,"Flat No.5B, Gandhi road"
-320677,Vinay C,AI3345,3365,3365,"Flat No.5B, Gandhi road"
+CrewId,CrewName,CrewType,CrewEmailId,FlightNo,PhoneNo,EmergencyContactNo,AddressToContact,HRPOCEmailId,HRPOCName,HRPOCPhoneNo
+220678,Ajit S,AH,ajit@gmail.com,AI0678,2232,2232,"Flat No. 2A, Rashbihari",mary@gmail.com,Mary,22345678
+220638,Amit B,AH,amit@gmail.com,AI0678,3345,3345,"Flat No.3C, NSC Bose ",mary@gmail.com,Mary,22345678
+220618,Aditya B,PI,aditya@gmail.com,AI0678,6678,6678,"Flat No.5B, Gandhi road",mary@gmail.com,Mary,22345678
+220648,Srikanth C,PI,srikanth@gmail.com,AI0678,9922,9922,"Flat No. 2A, Rashbihari",radha@gmail.com,Radha,22345678
+262225,Rima D,AH,rima@gmail.com,AI2267,8876,8876,"Flat No.3C, NSC Bose ",radha@gmail.com,Radha,22345678
+261115,Rishil B,AH,rishil@gmail.com,AI2267,6678,6678,"Flat No.5B, Gandhi road",radha@gmail.com,Radha,22345678
+211167,Ridhi B,PI,ridhi@gmail.com,None,6679,6679,"Flat No.5B, Gandhi road",radha@gmail.com,Radha,22345678
+263335,Ankita D,PI,ankita@gmail.com,AI2267,4456,4456,"Flat No. 2A, Rashbihari",radha@gmail.com,Radha,22345678
+262345,Abhijit J,AH,abhijit@gmail.com,AI2267,2234,2234,"Flat No.3C, NSC Bose ",jignesh@gmail.com,Jignesh,22345678
+262472,Simran K,AH,simran@gmail.com,AI3345,3367,3367,"Flat No.5B, Gandhi road",jignesh@gmail.com,Jignesh,22345678
+263367,Sohini R,AH,sohini@gmail.com,AI3345,7788,7788,"Flat No. 2A, Rashbihari",jignesh@gmail.com,Jignesh,22345678
+272745,Reshma D,AH,reshma@gmail.com,AI3345,9987,9987,"Flat No.3C, NSC Bose ",jignesh@gmail.com,Jignesh,22345678
+220678,Ankit J,PI,ankit@gmail.com,AI3345,3456,3456,"Flat No.5B, Gandhi road",jignesh@gmail.com,Jignesh,22345678
+339678,Swaroop C,PI,swaroop@gmail.com,AI5567,2678,2678,"Flat No. 2A, Rashbihari",jignesh@gmail.com,Jignesh,22345678
+306785,Abdul R,PI,abdul@gmail.com,AI5567,7890,7890,"Flat No.3C, NSC Bose ",ajay@gmail.com,Ajay,22345678
+456789,Sangeeta B,PI,sangeeta@gmail.com,AI5567,2267,2267,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220679,Raja B,AH,raja@gmail.com,AI0678,3365,3365,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220676,Raja C,AH,raja@gmail.com,AI0678,3365,3365,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220675,Raja D,AH,raja@gmail.com,AI0678,3365,3365,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220674,Raja H,AH,raja@gmail.com,AI0678,3365,3365,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220673,Shraddha R,AH,shraddha@gmail.com,AI2267,3365,3365,"Flat No.5B, Gandhi road",ajay@gmail.com,Ajay,22345678
+220672,Shraddha G,AH,shraddha@gmail.com,AI2267,3365,3365,"Flat No.5B, Gandhi road",rajeev@gmail.com,Rajeev,22345678
+220671,Shraddha H,AH,shraddha@gmail.com,AI2267,3365,3365,"Flat No.5B, Gandhi road",rajeev@gmail.com,Rajeev,22345678
+220670,Vinay A,PI,vinay@gmail.com,AI2267,3365,3365,"Flat No.5B, Gandhi road",rajeev@gmail.com,Rajeev,22345678
+320678,Vinay B,PI,vinay@gmail.com,AI3345,3365,3365,"Flat No.5B, Gandhi road",rajeev@gmail.com,Rajeev,22345678
+320677,Vinay C,PI,vinay@gmail.com,AI3345,3365,3365,"Flat No.5B, Gandhi road",rajeev@gmail.com,Rajeev,22345678

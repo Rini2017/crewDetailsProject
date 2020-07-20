@@ -5,19 +5,17 @@ public class FlightCrewDetails {
 	private String flightDate;
 	private String departureAirport;
 	private String arrivalAirport;
-	private String carrierCode;
 	private String employeeId;
 	private String roleCode;
 	private String baseCode;
 	private String rotationBeginDate;
 	
 	public FlightCrewDetails(String flightNumber, String flightDate,String departureAirport,String arrivalAirport
-			,String carrierCode,String employeeId,String roleCode, String baseCode, String rotationBeginDate  ){
+			,String employeeId,String roleCode, String baseCode, String rotationBeginDate  ){
 		this.flightNumber = flightNumber;
 		this.flightDate = flightDate;
 		this.departureAirport = departureAirport;
 		this.arrivalAirport = arrivalAirport;
-		this.carrierCode = carrierCode;
 		this.employeeId = employeeId;
 		this.roleCode = roleCode;
 		this.baseCode = baseCode;
@@ -47,12 +45,6 @@ public class FlightCrewDetails {
 	}
 	public void setArrivalAirport(String arrivalAirport) {
 		this.arrivalAirport = arrivalAirport;
-	}
-	public String getCarrierCode() {
-		return carrierCode;
-	}
-	public void setCarrierCode(String carrierCode) {
-		this.carrierCode = carrierCode;
 	}
 	public String getEmployeeId() {
 		return employeeId;
@@ -87,7 +79,6 @@ public class FlightCrewDetails {
 	    sb.append("    flightDate: ").append(toIndentedString(flightDate)).append("\n");
 	    sb.append("    departureAirport: ").append(toIndentedString(departureAirport)).append("\n");
 	    sb.append("    arrivalAirport: ").append(toIndentedString(arrivalAirport)).append("\n");
-	    sb.append("    carrierCode: ").append(toIndentedString(carrierCode)).append("\n");
 	    sb.append("    employeeId: ").append(toIndentedString(employeeId)).append("\n");
 	    sb.append("    roleCode: ").append(toIndentedString(roleCode)).append("\n");
 	    sb.append("    baseCode: ").append(toIndentedString(baseCode)).append("\n");

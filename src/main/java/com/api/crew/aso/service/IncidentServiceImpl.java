@@ -27,6 +27,7 @@ import com.api.crew.aso.model.Symptoms;
 import com.api.crew.aso.repository.CrewIncidentDao;
 import com.api.crew.aso.repository.HRContactDao;
 import com.api.crew.aso.repository.QuarantineDao;
+import com.mysql.cj.util.StringUtils;
 
 @Service
 @Transactional
@@ -53,7 +54,6 @@ public class IncidentServiceImpl implements IncidentService{
 				Integer.valueOf(incidentId.intValue()));
 		detailResponse.setIncidentId(incidentId);
 		detailResponse.setIncidentStatus(crewIncidentDto.getIncidentStatus());
-		detailResponse.setBodyTemperature(crewIncidentDto.getBodyTemperature());
 		List<Symptoms> symptomList = new ArrayList<Symptoms>();
 		Symptoms symptom;
 		if(crewIncidentDto.getSymptomFever().equalsIgnoreCase("Yes")){
@@ -96,6 +96,16 @@ public class IncidentServiceImpl implements IncidentService{
 			symptom.setSymptomValue("No");
 		}
 		symptomList.add(symptom);
+		if(crewIncidentDto.getBodyTemperature().equalsIgnoreCase("Yes")){
+			symptom = new Symptoms();
+			symptom.setSymptomName("Temperature");
+			symptom.setSymptomValue("Yes");
+		}else{
+			symptom = new Symptoms();
+			symptom.setSymptomName("Temperature");
+			symptom.setSymptomValue("No");
+		}
+		symptomList.add(symptom);
 		detailResponse.setSymptomList(symptomList);
 		crewDetailsResponse.setCrewEmailId(crewIncidentDto.getCrewEmailId());
 		crewDetailsResponse.setCrewId(crewId);
@@ -117,15 +127,17 @@ public class IncidentServiceImpl implements IncidentService{
 		hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
 		detailResponse.setHrPOCDetails(hrPOCDetails);
 		//fetch from quarantine_bed_occupancy_details table
-		if(bedReq.equalsIgnoreCase("Yes")){
-			QuarantineDto quarantineDto = quarantineDao.
-					findByCrewId(crewId);	
-			QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
-			quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-			quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-			quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-			quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-			detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+		if(!StringUtils.isNullOrEmpty(bedReq)){
+			if(bedReq.equalsIgnoreCase("Yes")){
+				QuarantineDto quarantineDto = quarantineDao.
+						findByCrewId(crewId);	
+				QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
+				quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+				quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+				quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+				quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+				detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+			}
 		}
 		return detailResponse;
 	}
@@ -161,7 +173,7 @@ public class IncidentServiceImpl implements IncidentService{
 			newDto = crewIncidentDao.findByCrewId(details.getCrewId());	
 			if(newDto == null){
 				CrewIncidentDto dto = new CrewIncidentDto();
-				dto.setIncidentStatus(request.getIncidentStatus());
+				dto.setIncidentStatus("open");
 				dto.setCrewId(details.getCrewId());
 				dto.setCrewName(details.getCrewName());
 				dto.setCrewType(details.getCrewType());
@@ -169,7 +181,6 @@ public class IncidentServiceImpl implements IncidentService{
 				dto.setPhoneNumber(details.getPhoneNumber());
 				dto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
 				dto.setAddressToContact(details.getAddressToContact());
-				dto.setBodyTemperature(request.getBodyTemperature());
 				symptoms.forEach(symptom -> {
 					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
 						dto.setSymptomFever(symptom.getSymptomValue());
@@ -179,6 +190,8 @@ public class IncidentServiceImpl implements IncidentService{
 						dto.setSymptomCough(symptom.getSymptomValue());
 					}else if (symptom.getSymptomName().equalsIgnoreCase("BreathingIssue")){
 						dto.setSymptomBreath(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
+						dto.setBodyTemperature(symptom.getSymptomValue());
 					}
 				});
 				
@@ -200,7 +213,6 @@ public class IncidentServiceImpl implements IncidentService{
 				newDto.setPhoneNumber(details.getPhoneNumber());
 				newDto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
 				newDto.setAddressToContact(details.getAddressToContact());
-				newDto.setBodyTemperature(request.getBodyTemperature());
 				symptoms.forEach(symptom -> {
 					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
 						newDto.setSymptomFever(symptom.getSymptomValue());
@@ -210,6 +222,8 @@ public class IncidentServiceImpl implements IncidentService{
 						newDto.setSymptomCough(symptom.getSymptomValue());
 					}else if (symptom.getSymptomName().equalsIgnoreCase("BreathingIssue")){
 						newDto.setSymptomBreath(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
+						newDto.setBodyTemperature(symptom.getSymptomValue());
 					}
 				});
 				
@@ -242,7 +256,6 @@ public class IncidentServiceImpl implements IncidentService{
 				QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
 				incident.setIncidentId(Long.valueOf(crewIncident.getIncidentId()));
 				incident.setIncidentStatus(crewIncident.getIncidentStatus());
-				incident.setBodyTemperature(crewIncident.getBodyTemperature());
 				List<Symptoms> symptomList = new ArrayList<Symptoms>();
 				Symptoms symptom;
 				if(crewIncident.getSymptomFever().equalsIgnoreCase("Yes")){
@@ -285,6 +298,16 @@ public class IncidentServiceImpl implements IncidentService{
 					symptom.setSymptomValue("No");
 				}
 				symptomList.add(symptom);
+				if(crewIncident.getBodyTemperature().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("Temperature");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("Temperature");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
 				incident.setSymptomList(symptomList);
 				crewDetails.setCrewId(crewIncident.getCrewId());
 				crewDetails.setCrewName(crewIncident.getCrewName());
@@ -306,14 +329,16 @@ public class IncidentServiceImpl implements IncidentService{
 				hrPOCDetails.setHrPOCName(contactDto.getHrName());
 				hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
 				incident.setHrPOCDetails(hrPOCDetails);
-				if(request.getBedReq().equalsIgnoreCase("Yes")){
-					QuarantineDto quarantineDto = quarantineDao.
-							findByCrewId(crewIncident.getCrewId());	
-					quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-					quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-					quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-					quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-					incident.setQuarantineCentreDetails(quarantineCentreDetails);
+				if(!StringUtils.isNullOrEmpty(request.getBedReq())){
+					if(request.getBedReq().equalsIgnoreCase("Yes")){
+						QuarantineDto quarantineDto = quarantineDao.
+								findByCrewId(crewIncident.getCrewId());	
+						quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+						quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+						quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+						quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+						incident.setQuarantineCentreDetails(quarantineCentreDetails);
+					}
 				}
 				incidentList.add(incident);
 			});			

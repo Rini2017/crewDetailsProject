@@ -1,6 +1,7 @@
 package com.api.crew.aso;
 
 import com.api.crew.aso.model.CrewDetails;
+import com.api.crew.aso.model.CrewDetailsResponse;
 import com.api.crew.aso.model.CrewMemberDetails;
 import com.api.crew.aso.model.CrewRequest;
 import com.api.crew.aso.model.CrewRequestUpdate;
@@ -45,19 +46,19 @@ public class AsoApiController implements AsoApi {
         this.request = request;
     }
 
-    public ResponseEntity<CrewDetails> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId) {
+    public ResponseEntity<CrewDetailsResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId) {
         String accept = request.getHeader("Accept");
-        CrewDetails crewDetails = null;
+        CrewDetailsResponse crewDetailsRes = null;
         if (accept != null && accept.contains("application/json")) {
             try {
-            	crewDetails = service.getCrewDetails(crewId);
+            	crewDetailsRes = service.getCrewDetails(crewId);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<CrewDetails>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<CrewDetailsResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<>(crewDetails,HttpStatus.OK);
+        return new ResponseEntity<>(crewDetailsRes,HttpStatus.OK);
     }
 
     public ResponseEntity<List<CrewMemberDetails>> getCrewMemberDetails(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequest body) {
@@ -76,20 +77,20 @@ public class AsoApiController implements AsoApi {
         return new ResponseEntity<>(crewDetailsList,HttpStatus.OK);
     }
     
-    public ResponseEntity<CrewDetails> updateCrewMember(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequestUpdate body) {
+    public ResponseEntity<CrewDetailsResponse> updateCrewMember(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequestUpdate body) {
         String accept = request.getHeader("Accept");
-        CrewDetails crewDetails = null;
+        CrewDetailsResponse crewDetailsRes = null;
         if (accept != null && accept.contains("application/json")) {
             try {
             	CrewRequestUpdate request = body;
-            	crewDetails = service.updateCrew(request);    
+            	crewDetailsRes = service.updateCrew(request);    
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<CrewDetails>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<CrewDetailsResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<>(crewDetails,HttpStatus.OK);
+        return new ResponseEntity<>(crewDetailsRes,HttpStatus.OK);
     }
 
 }
