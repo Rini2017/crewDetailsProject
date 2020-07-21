@@ -19,9 +19,6 @@ public class CrewRequest   {
   @JsonProperty("arrivalStationCode")
   private String arrivalStationCode = null;
 
-  @JsonProperty("carrierCode")
-  private String carrierCode = null;
-
   @JsonProperty("departureStationCode")
   private String departureStationCode = null;
 
@@ -51,25 +48,6 @@ public class CrewRequest   {
     this.arrivalStationCode = arrivalStationCode;
   }
 
-  public CrewRequest carrierCode(String carrierCode) {
-    this.carrierCode = carrierCode;
-    return this;
-  }
-
-  /**
-   * Get carrierCode
-   * @return carrierCode
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getCarrierCode() {
-    return carrierCode;
-  }
-
-  public void setCarrierCode(String carrierCode) {
-    this.carrierCode = carrierCode;
-  }
 
   public CrewRequest departureStationCode(String departureStationCode) {
     this.departureStationCode = departureStationCode;
@@ -142,7 +120,6 @@ public class CrewRequest   {
     }
     CrewRequest crewRequest = (CrewRequest) o;
     return Objects.equals(this.arrivalStationCode, crewRequest.arrivalStationCode) &&
-        Objects.equals(this.carrierCode, crewRequest.carrierCode) &&
         Objects.equals(this.departureStationCode, crewRequest.departureStationCode) &&
         Objects.equals(this.flightNumber, crewRequest.flightNumber) &&
         Objects.equals(this.flightOriginDate, crewRequest.flightOriginDate);
@@ -150,7 +127,7 @@ public class CrewRequest   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(arrivalStationCode, carrierCode, departureStationCode, flightNumber, flightOriginDate);
+    return Objects.hash(arrivalStationCode, departureStationCode, flightNumber, flightOriginDate);
   }
 
   @Override
@@ -159,7 +136,6 @@ public class CrewRequest   {
     sb.append("class CrewRequest {\n");
     
     sb.append("    arrivalStationCode: ").append(toIndentedString(arrivalStationCode)).append("\n");
-    sb.append("    carrierCode: ").append(toIndentedString(carrierCode)).append("\n");
     sb.append("    departureStationCode: ").append(toIndentedString(departureStationCode)).append("\n");
     sb.append("    flightNumber: ").append(toIndentedString(flightNumber)).append("\n");
     sb.append("    flightOriginDate: ").append(toIndentedString(flightOriginDate)).append("\n");

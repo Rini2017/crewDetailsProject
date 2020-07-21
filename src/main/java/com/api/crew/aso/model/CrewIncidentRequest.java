@@ -34,9 +34,6 @@ public class CrewIncidentRequest   {
   @JsonProperty("notificationStatus")
   private String notificationStatus = null;
 
-  @JsonProperty("bodyTemperature")
-  private String bodyTemperature = null;
-
   @JsonProperty("symptomList")
   @Valid
   private List<Symptoms> symptomList = null;
@@ -128,26 +125,7 @@ public class CrewIncidentRequest   {
     this.notificationStatus = notificationStatus;
   }
 
-  public CrewIncidentRequest bodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-    return this;
-  }
-
-  /**
-   * Get bodyTemperature
-   * @return bodyTemperature
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getBodyTemperature() {
-    return bodyTemperature;
-  }
-
-  public void setBodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-  }
-
+  
   public CrewIncidentRequest symptomList(List<Symptoms> symptomList) {
     this.symptomList = symptomList;
     return this;
@@ -233,7 +211,6 @@ public class CrewIncidentRequest   {
         Objects.equals(this.incidentStatus, crewIncidentRequest.incidentStatus) &&
         Objects.equals(this.bedReq, crewIncidentRequest.bedReq) &&
         Objects.equals(this.notificationStatus, crewIncidentRequest.notificationStatus) &&
-        Objects.equals(this.bodyTemperature, crewIncidentRequest.bodyTemperature) &&
         Objects.equals(this.symptomList, crewIncidentRequest.symptomList) &&
         Objects.equals(this.hrPOCDetails, crewIncidentRequest.hrPOCDetails) &&
         Objects.equals(this.flightDetails, crewIncidentRequest.flightDetails);
@@ -241,7 +218,7 @@ public class CrewIncidentRequest   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(crewDetails, incidentStatus, bedReq, notificationStatus, bodyTemperature, symptomList, hrPOCDetails, flightDetails);
+    return Objects.hash(crewDetails, incidentStatus, bedReq, notificationStatus, symptomList, hrPOCDetails, flightDetails);
   }
 
   @Override
@@ -253,7 +230,6 @@ public class CrewIncidentRequest   {
     sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
     sb.append("    bedReq: ").append(toIndentedString(bedReq)).append("\n");
     sb.append("    notificationStatus: ").append(toIndentedString(notificationStatus)).append("\n");
-    sb.append("    bodyTemperature: ").append(toIndentedString(bodyTemperature)).append("\n");
     sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
     sb.append("    hrPOCDetails: ").append(toIndentedString(hrPOCDetails)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");

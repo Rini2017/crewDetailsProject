@@ -5,7 +5,7 @@
  */
 package com.api.crew.aso;
 
-import com.api.crew.aso.model.CrewDetails;
+import com.api.crew.aso.model.CrewDetailsResponse;
 import com.api.crew.aso.model.CrewMemberDetails;
 import com.api.crew.aso.model.CrewRequest;
 import com.api.crew.aso.model.CrewRequestUpdate;
@@ -31,15 +31,15 @@ import java.util.List;
 @RequestMapping(value = "/v2")
 public interface AsoApi {
 
-    @ApiOperation(value = "Search with crewId", nickname = "getCrewDetails", notes = "", response = CrewDetails.class, tags={ "crewDetail", })
+    @ApiOperation(value = "Search with crewId", nickname = "getCrewDetails", notes = "", response = CrewDetailsResponse.class, tags={ "crewDetail", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CrewDetails.class),
+        @ApiResponse(code = 200, message = "successful operation", response = CrewDetailsResponse.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Crew not found") })
     @RequestMapping(value = "/aso/crew/details{crewId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<CrewDetails> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId);
+    ResponseEntity<CrewDetailsResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId);
 
 
     @ApiOperation(value = "", nickname = "getCrewMemberDetails", notes = "", response = CrewMemberDetails.class, responseContainer = "List", tags={ "crewMemberDetail", })
@@ -53,15 +53,15 @@ public interface AsoApi {
         method = RequestMethod.POST)
     ResponseEntity<List<CrewMemberDetails>> getCrewMemberDetails(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequest body);
     
-    @ApiOperation(value = "", nickname = "updateCrewMember", notes = "", response = CrewDetails.class, responseContainer = "List", tags={ "crewMemberDetail", })
+    @ApiOperation(value = "", nickname = "updateCrewMember", notes = "", response = CrewDetailsResponse.class, responseContainer = "List", tags={ "crewMemberDetail", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = CrewDetails.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "successful operation", response = CrewDetailsResponse.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Invalid FlightNumber supplied"),
         @ApiResponse(code = 404, message = "Flight not found") })
     @RequestMapping(value = "/aso/crew/updateId",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<CrewDetails> updateCrewMember(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequestUpdate body);
+    ResponseEntity<CrewDetailsResponse> updateCrewMember(@ApiParam(value = "Flight Details" ,required=true )  @Valid @RequestBody CrewRequestUpdate body);
 
 }
