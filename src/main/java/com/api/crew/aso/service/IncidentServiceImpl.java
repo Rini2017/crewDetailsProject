@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,97 +47,181 @@ public class IncidentServiceImpl implements IncidentService{
     private JavaMailSender javaMailSender;
 
 	@Override
-	public CrewIncidentDetailResponse getCrewIncidentDetails(Long crewId, Long incidentId, String bedReq) {
+	public CrewIncidentDetailResponse getCrewIncidentDetails(Long crewId, Long incidentId, String flightNumber, String date, String bedReq) {
 		// TODO Auto-generated method stub
 		CrewIncidentDetailResponse detailResponse = new CrewIncidentDetailResponse();
+		CrewIncidentDto crewIncidentDto = new CrewIncidentDto();
+		List<CrewIncidentDto> crewIncidentDtoList  = null;
+		CrewIncidentDto crewIncidentDtoReceive = null;
+		if(crewId == null || crewId != 0){
+			crewIncidentDto.setCrewId(crewId);
+		}
+		if(incidentId == null || incidentId != 0){
+			crewIncidentDto.setIncidentId(incidentId.intValue());
+		}
+		if(!StringUtils.isNullOrEmpty(flightNumber)){
+			crewIncidentDto.setFlightNumber(flightNumber);
+		}
+		if(!StringUtils.isNullOrEmpty(date)){
+			crewIncidentDto.setFlightOriginDate(date);
+		}
+		if(crewIncidentDto.getCrewId() == null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
+				StringUtils.isNullOrEmpty(date)){
+			return null;
+		}else {
+			if(crewIncidentDto.getCrewId() != null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
+				StringUtils.isNullOrEmpty(date)){
+				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
+				crewIncidentDtoReceive = crewIncidentDao.findByCrewId(crewIncidentDto.getCrewId());
+				crewIncidentDtoList.add(crewIncidentDtoReceive);
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+					StringUtils.isNullOrEmpty(flightNumber) && StringUtils.isNullOrEmpty(date)){
+				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
+				crewIncidentDtoReceive = crewIncidentDao.findByIncidentId(incidentId);
+				crewIncidentDtoList.add(crewIncidentDtoReceive);
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByFlightNumber(crewIncidentDto.getFlightNumber());
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByFlightOriginDate(crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
+				crewIncidentDtoReceive = crewIncidentDao.findByCrewIdAndIncidentId(crewIncidentDto.getCrewId(),crewIncidentDto.getIncidentId());
+				crewIncidentDtoList.add(crewIncidentDtoReceive);
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumber(crewIncidentDto.getCrewId(),crewIncidentDto.getFlightNumber());
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightOriginDate(crewIncidentDto.getCrewId(),crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightNumber(incidentId,crewIncidentDto.getFlightNumber());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightOriginDate(incidentId,crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByFlightNumberAndFlightOriginDate(crewIncidentDto.getFlightNumber(),
+						crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndCrewIdAndFlightNumber(incidentId,crewIncidentDto.getCrewId()
+						,crewIncidentDto.getFlightNumber());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightNumberAndFlightOriginDate(incidentId,
+						crewIncidentDto.getFlightNumber(),crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumberAndFlightOriginDate(crewIncidentDto.getCrewId(),
+						crewIncidentDto.getFlightNumber(), crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewId(),
+						incidentId, crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
+				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumberAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewId(),
+						crewIncidentDto.getFlightNumber(),crewIncidentDto.getIncidentId(),crewIncidentDto.getFlightOriginDate());
+			}			
+			
+		}	
 		CrewDetails crewDetailsResponse = new CrewDetails();
-		CrewIncidentDto crewIncidentDto = crewIncidentDao.findByCrewIdAndIncidentId(crewId, 
-				Integer.valueOf(incidentId.intValue()));
-		detailResponse.setIncidentId(incidentId);
-		detailResponse.setIncidentStatus(crewIncidentDto.getIncidentStatus());
-		List<Symptoms> symptomList = new ArrayList<Symptoms>();
-		Symptoms symptom;
-		if(crewIncidentDto.getSymptomFever().equalsIgnoreCase("Yes")){
-			symptom = new Symptoms();
-			symptom.setSymptomName("Fever");
-			symptom.setSymptomValue("Yes");
-		}else{
-			symptom = new Symptoms();
-			symptom.setSymptomName("Fever");
-			symptom.setSymptomValue("No");
+		if(crewIncidentDtoList != null && crewIncidentDtoList.size() > 0){
+			for(CrewIncidentDto dto : crewIncidentDtoList){
+				detailResponse.setIncidentId(Long.valueOf(dto.getIncidentId()));
+				detailResponse.setIncidentStatus(dto.getIncidentStatus());
+				List<Symptoms> symptomList = new ArrayList<Symptoms>();
+				Symptoms symptom;
+				if(dto.getSymptomFever().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("Fever");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("Fever");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				if(dto.getSymptomCold().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("Cold");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("Cold");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				if(dto.getSymptomCough().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("Cough");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("Cough");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				if(dto.getSymptomBreath().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("BreathingIssue");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("BreathingIssue");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				if(dto.getBodyTemperature().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("Temperature");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("Temperature");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				detailResponse.setSymptomList(symptomList);
+				crewDetailsResponse.setCrewEmailId(dto.getCrewEmailId());
+				crewDetailsResponse.setCrewId(crewId);
+				crewDetailsResponse.setCrewName(dto.getCrewName());
+				crewDetailsResponse.setEmergencyContactNumber(dto.getEmergencyContactNumber());
+				crewDetailsResponse.setPhoneNumber(dto.getPhoneNumber());
+				crewDetailsResponse.setAddressToContact(dto.getAddressToContact());
+				detailResponse.setCrewDetails(crewDetailsResponse);
+				FlightDetails flightDetails = new FlightDetails();
+				flightDetails.setArrivalStationCode(dto.getArrivalStationCode());
+				flightDetails.setDepartureStationCode(dto.getDepartureStationCode());
+				flightDetails.setFlightNumber(dto.getFlightNumber());
+				flightDetails.setFlightOriginDate(dto.getFlightOriginDate());
+				detailResponse.setFlightDetails(flightDetails);	
+			}
 		}
-		symptomList.add(symptom);
-		if(crewIncidentDto.getSymptomCold().equalsIgnoreCase("Yes")){
-			symptom = new Symptoms();
-			symptom.setSymptomName("Cold");
-			symptom.setSymptomValue("Yes");
-		}else{
-			symptom = new Symptoms();
-			symptom.setSymptomName("Cold");
-			symptom.setSymptomValue("No");
-		}
-		symptomList.add(symptom);
-		if(crewIncidentDto.getSymptomCough().equalsIgnoreCase("Yes")){
-			symptom = new Symptoms();
-			symptom.setSymptomName("Cough");
-			symptom.setSymptomValue("Yes");
-		}else{
-			symptom = new Symptoms();
-			symptom.setSymptomName("Cough");
-			symptom.setSymptomValue("No");
-		}
-		symptomList.add(symptom);
-		if(crewIncidentDto.getSymptomBreath().equalsIgnoreCase("Yes")){
-			symptom = new Symptoms();
-			symptom.setSymptomName("BreathingIssue");
-			symptom.setSymptomValue("Yes");
-		}else{
-			symptom = new Symptoms();
-			symptom.setSymptomName("BreathingIssue");
-			symptom.setSymptomValue("No");
-		}
-		symptomList.add(symptom);
-		if(crewIncidentDto.getBodyTemperature().equalsIgnoreCase("Yes")){
-			symptom = new Symptoms();
-			symptom.setSymptomName("Temperature");
-			symptom.setSymptomValue("Yes");
-		}else{
-			symptom = new Symptoms();
-			symptom.setSymptomName("Temperature");
-			symptom.setSymptomValue("No");
-		}
-		symptomList.add(symptom);
-		detailResponse.setSymptomList(symptomList);
-		crewDetailsResponse.setCrewEmailId(crewIncidentDto.getCrewEmailId());
-		crewDetailsResponse.setCrewId(crewId);
-		crewDetailsResponse.setCrewName(crewIncidentDto.getCrewName());
-		crewDetailsResponse.setEmergencyContactNumber(crewIncidentDto.getEmergencyContactNumber());
-		crewDetailsResponse.setPhoneNumber(crewIncidentDto.getPhoneNumber());
-		crewDetailsResponse.setAddressToContact(crewIncidentDto.getAddressToContact());
-		FlightDetails flightDetails = new FlightDetails();
-		flightDetails.setArrivalStationCode(crewIncidentDto.getArrivalStationCode());
-		flightDetails.setDepartureStationCode(crewIncidentDto.getDepartureStationCode());
-		flightDetails.setFlightNumber(crewIncidentDto.getFlightNumber());
-		flightDetails.setFlightOriginDate(crewIncidentDto.getFlightOriginDate());
-		detailResponse.setFlightDetails(flightDetails);		
-		//fetch and set in hr_poc_detail table
-		HrPOCDetails hrPOCDetails = new HrPOCDetails();
-		HRContactDto contactDto = hrContactDao.findByCrewId(crewId);
-		hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
-		hrPOCDetails.setHrPOCName(contactDto.getHrName());
-		hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
-		detailResponse.setHrPOCDetails(hrPOCDetails);
-		//fetch from quarantine_bed_occupancy_details table
-		if(!StringUtils.isNullOrEmpty(bedReq)){
-			if(bedReq.equalsIgnoreCase("Yes")){
-				QuarantineDto quarantineDto = quarantineDao.
-						findByCrewId(crewId);	
-				QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
-				quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-				quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-				quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-				quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-				detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+		if(crewId != null){
+			//fetch and set in hr_poc_detail table
+			HrPOCDetails hrPOCDetails = new HrPOCDetails();
+			HRContactDto contactDto = hrContactDao.findByCrewId(crewId);
+			hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
+			hrPOCDetails.setHrPOCName(contactDto.getHrName());
+			hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
+			detailResponse.setHrPOCDetails(hrPOCDetails);
+			//fetch from quarantine_bed_occupancy_details table
+			if(!StringUtils.isNullOrEmpty(bedReq)){
+				if(bedReq.equalsIgnoreCase("Yes")){
+					QuarantineDto quarantineDto = quarantineDao.
+							findByCrewId(crewId);	
+					QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
+					quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+					quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+					quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+					quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+					detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+				}
 			}
 		}
 		return detailResponse;

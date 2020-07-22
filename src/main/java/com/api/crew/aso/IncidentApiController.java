@@ -3,6 +3,7 @@ package com.api.crew.aso;
 import com.api.crew.aso.model.CrewIncidentDetailResponse;
 import com.api.crew.aso.model.CrewIncidentRequest;
 import com.api.crew.aso.model.CrewIncidentResponse;
+import com.api.crew.aso.model.CrewIncidentRetrieveRequest;
 import com.api.crew.aso.model.NotificationResponse;
 import com.api.crew.aso.service.IncidentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,12 +46,12 @@ public class IncidentApiController implements IncidentApi {
         this.request = request;
     }
 
-    public ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId,@ApiParam(value = "",required=true) @PathVariable("bedReq") String bedReq) {
+    public ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "Incident Details" ,required=true )  @Valid @RequestBody CrewIncidentRetrieveRequest body) {
         String accept = request.getHeader("Accept");
         CrewIncidentDetailResponse crewDetailResponse = null;
         if (accept != null && accept.contains("application/json")) {
             try {
-            	crewDetailResponse = service.getCrewIncidentDetails(crewId, incidentId,bedReq);
+            	crewDetailResponse = service.getCrewIncidentDetails(body.getCrewId(), body.getIncidentId(),body.getFlightNumber(), body.getDate(), body.getBedReq());
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<CrewIncidentDetailResponse>(HttpStatus.INTERNAL_SERVER_ERROR);

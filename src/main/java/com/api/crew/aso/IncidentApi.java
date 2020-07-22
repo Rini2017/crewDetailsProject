@@ -8,6 +8,7 @@ package com.api.crew.aso;
 import com.api.crew.aso.model.CrewIncidentDetailResponse;
 import com.api.crew.aso.model.CrewIncidentRequest;
 import com.api.crew.aso.model.CrewIncidentResponse;
+import com.api.crew.aso.model.CrewIncidentRetrieveRequest;
 import com.api.crew.aso.model.NotificationResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,10 @@ public interface IncidentApi {
         @ApiResponse(code = 200, message = "successful operation", response = CrewIncidentDetailResponse.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Crew not found") })
-    @RequestMapping(value = "/incident/crew/retrieve{crewId},{incidentId},{bedReq}",
+    @RequestMapping(value = "/incident/crew/retrieve",
         produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "",required=true) @PathVariable("crewId") Long crewId,@ApiParam(value = "",required=true) @PathVariable("incidentId") Long incidentId,@ApiParam(value = "",required=true) @PathVariable("bedReq") String bedReq);
+        method = RequestMethod.POST)
+    ResponseEntity<CrewIncidentDetailResponse> getCrewDetails(@ApiParam(value = "Incident Details" ,required=true )  @Valid @RequestBody CrewIncidentRetrieveRequest body);
 
 
     @ApiOperation(value = "", nickname = "notificationEmail", notes = "", response = NotificationResponse.class, tags={ "notificationDetail", })

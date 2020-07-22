@@ -30,7 +30,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
             throw new ExitException();
         }
     }
-
+ 
     public static void main(String[] args) throws Exception {
         new SpringApplication(Swagger2SpringBoot.class).run(args);
     }

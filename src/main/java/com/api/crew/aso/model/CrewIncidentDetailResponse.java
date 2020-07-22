@@ -29,9 +29,6 @@ public class CrewIncidentDetailResponse   {
   @JsonProperty("incidentStatus")
   private String incidentStatus = null;
 
-  @JsonProperty("bodyTemperature")
-  private String bodyTemperature = null;
-
   @JsonProperty("symptomList")
   @Valid
   private List<Symptoms> symptomList = null;
@@ -88,25 +85,7 @@ public class CrewIncidentDetailResponse   {
     this.incidentStatus = incidentStatus;
   }
 
-  public CrewIncidentDetailResponse bodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-    return this;
-  }
-
-  /**
-   * Get bodyTemperature
-   * @return bodyTemperature
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getBodyTemperature() {
-    return bodyTemperature;
-  }
-
-  public void setBodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-  }
+ 
 
   public CrewIncidentDetailResponse symptomList(List<Symptoms> symptomList) {
     this.symptomList = symptomList;
@@ -233,7 +212,6 @@ public class CrewIncidentDetailResponse   {
     CrewIncidentDetailResponse crewIncidentDetailResponse = (CrewIncidentDetailResponse) o;
     return Objects.equals(this.incidentId, crewIncidentDetailResponse.incidentId) &&
         Objects.equals(this.incidentStatus, crewIncidentDetailResponse.incidentStatus) &&
-        Objects.equals(this.bodyTemperature, crewIncidentDetailResponse.bodyTemperature) &&
         Objects.equals(this.symptomList, crewIncidentDetailResponse.symptomList) &&
         Objects.equals(this.crewDetails, crewIncidentDetailResponse.crewDetails) &&
         Objects.equals(this.flightDetails, crewIncidentDetailResponse.flightDetails) &&
@@ -243,7 +221,7 @@ public class CrewIncidentDetailResponse   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(incidentId, incidentStatus, bodyTemperature, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
+    return Objects.hash(incidentId, incidentStatus, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
   }
 
   @Override
@@ -253,7 +231,6 @@ public class CrewIncidentDetailResponse   {
     
     sb.append("    incidentId: ").append(toIndentedString(incidentId)).append("\n");
     sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
-    sb.append("    bodyTemperature: ").append(toIndentedString(bodyTemperature)).append("\n");
     sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
     sb.append("    crewDetails: ").append(toIndentedString(crewDetails)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
