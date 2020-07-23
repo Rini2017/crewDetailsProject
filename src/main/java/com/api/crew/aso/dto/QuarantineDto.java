@@ -55,4 +55,10 @@ public class QuarantineDto {
 	public void setBedNo(String bedNo) {
 		this.bedNo = bedNo;
 	}
+	public Long getCrewId() {
+		return crewId;
+	}
+	public void setCrewId(Long crewId) {
+		this.crewId = crewId;
+	}
 }

@@ -19,6 +19,10 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-20T07:34:50.119Z")
 
 public class RetrieveResponse   {
+	
+  @JsonProperty("testingDate")
+  private String testingDate = null;
+	
   @JsonProperty("flightDetails")
   private FlightDetails flightDetails = null;
 
@@ -27,6 +31,28 @@ public class RetrieveResponse   {
 
   @JsonProperty("symptom")
   private SymptomDetails symptom = null;
+  
+  
+  public RetrieveResponse testingDate(String testingDate) {
+	    this.testingDate = testingDate;
+	    return this;
+	  }
+
+  /**
+   * Get testingDate
+   * @return testingDate
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getTestingDate() {
+		return testingDate;
+	}
+
+	public void setTestingDate(String testingDate) {
+		this.testingDate = testingDate;
+	}
+
 
   public RetrieveResponse flightDetails(FlightDetails flightDetails) {
     this.flightDetails = flightDetails;
@@ -101,21 +127,22 @@ public class RetrieveResponse   {
       return false;
     }
     RetrieveResponse retrieveResponse = (RetrieveResponse) o;
-    return Objects.equals(this.flightDetails, retrieveResponse.flightDetails) &&
+    return  Objects.equals(this.testingDate, retrieveResponse.testingDate) &&
+    		Objects.equals(this.flightDetails, retrieveResponse.flightDetails) &&
         Objects.equals(this.passengerDetails, retrieveResponse.passengerDetails) &&
         Objects.equals(this.symptom, retrieveResponse.symptom);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(flightDetails, passengerDetails, symptom);
+    return Objects.hash(testingDate,flightDetails, passengerDetails, symptom);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class RetrieveResponse {\n");
-    
+    sb.append("    testingDate: ").append(toIndentedString(testingDate)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
     sb.append("    passengerDetails: ").append(toIndentedString(passengerDetails)).append("\n");
     sb.append("    symptom: ").append(toIndentedString(symptom)).append("\n");
@@ -133,5 +160,7 @@ public class RetrieveResponse   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+
 }
 

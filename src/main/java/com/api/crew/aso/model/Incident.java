@@ -10,6 +10,8 @@ import com.api.crew.aso.model.FlightDetails;
 import com.api.crew.aso.model.HrPOCDetails;
 import com.api.crew.aso.model.QuarantineDetails;
 import com.api.crew.aso.model.Symptoms;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -29,8 +31,15 @@ public class Incident   {
   @JsonProperty("incidentStatus")
   private String incidentStatus = null;
 
-  @JsonProperty("bodyTemperature")
-  private String bodyTemperature = null;
+  
+  @JsonProperty("replacedCrewId")
+  private Long replacedCrewId = null;
+  
+  @JsonProperty("replacedCrewName")
+  private String replacedCrewName = null;
+  
+  @JsonProperty("date")
+  private Timestamp date = null;
 
   @JsonProperty("symptomList")
   @Valid
@@ -47,6 +56,34 @@ public class Incident   {
 
   @JsonProperty("hrPOCDetails")
   private HrPOCDetails hrPOCDetails = null;
+  
+  
+  public Incident replacedCrewId(Long replacedCrewId) {
+	    this.replacedCrewId = replacedCrewId;
+	    return this;
+	  }
+
+
+	public Long getReplacedCrewId() {
+		return replacedCrewId;
+	}
+	
+	public void setReplacedCrewId(Long replacedCrewId) {
+		this.replacedCrewId = replacedCrewId;
+	}
+	
+	public Incident replacedCrewName(String replacedCrewName) {
+	    this.replacedCrewName = replacedCrewName;
+	    return this;
+	  }
+	
+	public String getReplacedCrewName() {
+		return replacedCrewName;
+	}
+	
+	public void setReplacedCrewName(String replacedCrewName) {
+		this.replacedCrewName = replacedCrewName;
+	}
 
   public Incident incidentId(Long incidentId) {
     this.incidentId = incidentId;
@@ -88,25 +125,7 @@ public class Incident   {
     this.incidentStatus = incidentStatus;
   }
 
-  public Incident bodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-    return this;
-  }
 
-  /**
-   * Get bodyTemperature
-   * @return bodyTemperature
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getBodyTemperature() {
-    return bodyTemperature;
-  }
-
-  public void setBodyTemperature(String bodyTemperature) {
-    this.bodyTemperature = bodyTemperature;
-  }
 
   public Incident symptomList(List<Symptoms> symptomList) {
     this.symptomList = symptomList;
@@ -233,7 +252,6 @@ public class Incident   {
     Incident incident = (Incident) o;
     return Objects.equals(this.incidentId, incident.incidentId) &&
         Objects.equals(this.incidentStatus, incident.incidentStatus) &&
-        Objects.equals(this.bodyTemperature, incident.bodyTemperature) &&
         Objects.equals(this.symptomList, incident.symptomList) &&
         Objects.equals(this.crewDetails, incident.crewDetails) &&
         Objects.equals(this.flightDetails, incident.flightDetails) &&
@@ -243,7 +261,7 @@ public class Incident   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(incidentId, incidentStatus, bodyTemperature, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
+    return Objects.hash(incidentId, incidentStatus, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
   }
 
   @Override
@@ -253,7 +271,6 @@ public class Incident   {
     
     sb.append("    incidentId: ").append(toIndentedString(incidentId)).append("\n");
     sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
-    sb.append("    bodyTemperature: ").append(toIndentedString(bodyTemperature)).append("\n");
     sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
     sb.append("    crewDetails: ").append(toIndentedString(crewDetails)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
@@ -273,5 +290,15 @@ public class Incident   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+
+public Timestamp getDate() {
+	return date;
+}
+
+
+public void setDate(Timestamp date) {
+	this.date = date;
+}
 }
 

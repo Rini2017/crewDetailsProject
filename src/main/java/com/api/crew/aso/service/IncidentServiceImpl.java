@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +135,9 @@ public class IncidentServiceImpl implements IncidentService{
 			for(CrewIncidentDto dto : crewIncidentDtoList){
 				detailResponse.setIncidentId(Long.valueOf(dto.getIncidentId()));
 				detailResponse.setIncidentStatus(dto.getIncidentStatus());
+				detailResponse.setReplacedCrewId(dto.getReplacedCrewId());
+				detailResponse.setReplacedCrewName(dto.getReplacedCrewName());
+				detailResponse.setDate(dto.getCreationDate());
 				List<Symptoms> symptomList = new ArrayList<Symptoms>();
 				Symptoms symptom;
 				if(dto.getSymptomFever().equalsIgnoreCase("Yes")){
@@ -188,7 +192,7 @@ public class IncidentServiceImpl implements IncidentService{
 				symptomList.add(symptom);
 				detailResponse.setSymptomList(symptomList);
 				crewDetailsResponse.setCrewEmailId(dto.getCrewEmailId());
-				crewDetailsResponse.setCrewId(crewId);
+				crewDetailsResponse.setCrewId(dto.getCrewId());
 				crewDetailsResponse.setCrewName(dto.getCrewName());
 				crewDetailsResponse.setEmergencyContactNumber(dto.getEmergencyContactNumber());
 				crewDetailsResponse.setPhoneNumber(dto.getPhoneNumber());
@@ -200,30 +204,31 @@ public class IncidentServiceImpl implements IncidentService{
 				flightDetails.setFlightNumber(dto.getFlightNumber());
 				flightDetails.setFlightOriginDate(dto.getFlightOriginDate());
 				detailResponse.setFlightDetails(flightDetails);	
-			}
-		}
-		if(crewId != null){
-			//fetch and set in hr_poc_detail table
-			HrPOCDetails hrPOCDetails = new HrPOCDetails();
-			HRContactDto contactDto = hrContactDao.findByCrewId(crewId);
-			hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
-			hrPOCDetails.setHrPOCName(contactDto.getHrName());
-			hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
-			detailResponse.setHrPOCDetails(hrPOCDetails);
-			//fetch from quarantine_bed_occupancy_details table
-			if(!StringUtils.isNullOrEmpty(bedReq)){
-				if(bedReq.equalsIgnoreCase("Yes")){
-					QuarantineDto quarantineDto = quarantineDao.
-							findByCrewId(crewId);	
-					QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
-					quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-					quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-					quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-					quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-					detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+				if(dto.getCrewId() != null){
+					//fetch and set in hr_poc_detail table
+					HrPOCDetails hrPOCDetails = new HrPOCDetails();
+					HRContactDto contactDto = hrContactDao.findByCrewId(crewId);
+					hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
+					hrPOCDetails.setHrPOCName(contactDto.getHrName());
+					hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
+					detailResponse.setHrPOCDetails(hrPOCDetails);
+					//fetch from quarantine_bed_occupancy_details table
+					if(!StringUtils.isNullOrEmpty(bedReq)){
+						if(bedReq.equalsIgnoreCase("Yes")){
+							QuarantineDto quarantineDto = quarantineDao.
+									findByCrewId(crewId);	
+							QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
+							quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+							quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+							quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+							quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+							detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+						}
+					}
 				}
 			}
 		}
+		
 		return detailResponse;
 	}
 
@@ -284,6 +289,8 @@ public class IncidentServiceImpl implements IncidentService{
 				dto.setDepartureStationCode(flightDetails.getDepartureStationCode());			
 				dto.setFlightNumber(flightDetails.getFlightNumber());
 				dto.setFlightOriginDate(flightDetails.getFlightOriginDate());
+				dto.setReplacedCrewId(request.getReplacedCrewId());
+				dto.setReplacedCrewName(request.getReplacedCrewName());
 				Calendar calendar = Calendar.getInstance();
 				java.util.Date now = calendar.getTime();
 				dto.setCreationDate(new Timestamp(now.getTime()));
@@ -338,6 +345,12 @@ public class IncidentServiceImpl implements IncidentService{
 				}
 				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightOriginDate())){
 					newDto.setFlightOriginDate(flightDetails.getFlightOriginDate());
+				}
+				if(request.getReplacedCrewId() != 0){
+					newDto.setReplacedCrewId(request.getReplacedCrewId());
+				}
+				if(!StringUtils.isNullOrEmpty(request.getReplacedCrewName())){
+					newDto.setReplacedCrewName(request.getReplacedCrewName());
 				}
 				crewIncidentDao.save(newDto);
 			}
@@ -438,6 +451,8 @@ public class IncidentServiceImpl implements IncidentService{
 					crewDetails.setAddressToContact(crewIncident.getAddressToContact());
 				}
 				incident.setCrewDetails(crewDetails);
+				incident.setReplacedCrewId(crewIncident.getReplacedCrewId());
+				incident.setReplacedCrewName(crewIncident.getReplacedCrewName());
 				if(!StringUtils.isNullOrEmpty(crewIncident.getArrivalStationCode())){
 					flightDetailsRes.setArrivalStationCode(crewIncident.getArrivalStationCode());
 				}
@@ -451,6 +466,7 @@ public class IncidentServiceImpl implements IncidentService{
 					flightDetailsRes.setFlightOriginDate(crewIncident.getFlightOriginDate());
 				}
 				incident.setFlightDetails(flightDetailsRes);
+				incident.setDate(crewIncident.getCreationDate());
 				HrPOCDetails hrPOCDetails = new HrPOCDetails();
 				HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewId());
 				if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
@@ -465,21 +481,28 @@ public class IncidentServiceImpl implements IncidentService{
 				incident.setHrPOCDetails(hrPOCDetails);
 				if(!StringUtils.isNullOrEmpty(request.getBedReq())){
 					if(request.getBedReq().equalsIgnoreCase("Yes")){
-						QuarantineDto quarantineDto = quarantineDao.
-								findByCrewId(crewIncident.getCrewId());	
-						if(!StringUtils.isNullOrEmpty(quarantineDto.getBedNo())){
-							quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+						try{
+							Optional<QuarantineDto> quarantineDtoOptional = quarantineDao.
+									findById(crewIncident.getCrewId().intValue());	
+							QuarantineDto quarantineDto = quarantineDtoOptional.get();
+							if(quarantineDto != null){
+								if(!StringUtils.isNullOrEmpty(quarantineDto.getBedNo())){
+									quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+								}
+								if(!StringUtils.isNullOrEmpty(quarantineDto.getFloorNo())){
+									quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+								}
+								if(!StringUtils.isNullOrEmpty(quarantineDto.getQrCenterId())){
+									quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+								}
+								if(!StringUtils.isNullOrEmpty(quarantineDto.getRoomNo())){
+									quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+								}
+							}
+							incident.setQuarantineCentreDetails(quarantineCentreDetails);
+						}catch(Exception e){
+							e.printStackTrace();
 						}
-						if(!StringUtils.isNullOrEmpty(quarantineDto.getFloorNo())){
-							quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-						}
-						if(!StringUtils.isNullOrEmpty(quarantineDto.getQrCenterId())){
-							quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-						}
-						if(!StringUtils.isNullOrEmpty(quarantineDto.getRoomNo())){
-							quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-						}
-						incident.setQuarantineCentreDetails(quarantineCentreDetails);
 					}
 				}
 				incidentList.add(incident);

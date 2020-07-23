@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.api.crew.aso.model.CrewDetails;
 import com.api.crew.aso.model.FlightDetails;
 import com.api.crew.aso.model.HrPOCDetails;
+import com.api.crew.aso.model.PassengerDetails;
 import com.api.crew.aso.model.Symptoms;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,29 +16,26 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CrewIncidentRequest
+ * PassengerIncidentRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T14:09:07.095Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-23T05:52:49.446Z")
 
-public class CrewIncidentRequest   {
-  @JsonProperty("crewDetails")
-  private CrewDetails crewDetails = null;
+public class PassengerIncidentRequest   {
+  @JsonProperty("passengerDetails")
+  private PassengerDetails passengerDetails = null;
 
   @JsonProperty("incidentStatus")
   private String incidentStatus = null;
-  
-  @JsonProperty("replacedCrewId")
-  private Long replacedCrewId = null;
-  
-  @JsonProperty("replacedCrewName")
-  private String replacedCrewName = null;
 
   @JsonProperty("bedReq")
   private String bedReq = null;
 
   @JsonProperty("notificationStatus")
   private String notificationStatus = null;
+
+  @JsonProperty("bodyTemperature")
+  private String bodyTemperature = null;
 
   @JsonProperty("symptomList")
   @Valid
@@ -50,55 +47,28 @@ public class CrewIncidentRequest   {
   @JsonProperty("flightDetails")
   private FlightDetails flightDetails = null;
 
-  public CrewIncidentRequest crewDetails(CrewDetails crewDetails) {
-    this.crewDetails = crewDetails;
+  public PassengerIncidentRequest passengerDetails(PassengerDetails passengerDetails) {
+    this.passengerDetails = passengerDetails;
     return this;
   }
 
   /**
-   * Get crewDetails
-   * @return crewDetails
+   * Get passengerDetails
+   * @return passengerDetails
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public CrewDetails getCrewDetails() {
-    return crewDetails;
+  public PassengerDetails getPassengerDetails() {
+    return passengerDetails;
   }
 
-  public void setCrewDetails(CrewDetails crewDetails) {
-    this.crewDetails = crewDetails;
+  public void setPassengerDetails(PassengerDetails passengerDetails) {
+    this.passengerDetails = passengerDetails;
   }
-  
-  public CrewIncidentRequest replacedCrewId(Long replacedCrewId) {
-	    this.replacedCrewId = replacedCrewId;
-	    return this;
-	  }
-  
 
-	public Long getReplacedCrewId() {
-		return replacedCrewId;
-	}
-	
-	public void setReplacedCrewId(Long replacedCrewId) {
-		this.replacedCrewId = replacedCrewId;
-	}
-	
-	public CrewIncidentRequest replacedCrewName(String replacedCrewName) {
-	    this.replacedCrewName = replacedCrewName;
-	    return this;
-	  }
-	
-	public String getReplacedCrewName() {
-		return replacedCrewName;
-	}
-	
-	public void setReplacedCrewName(String replacedCrewName) {
-		this.replacedCrewName = replacedCrewName;
-	}
-
-  public CrewIncidentRequest incidentStatus(String incidentStatus) {
+  public PassengerIncidentRequest incidentStatus(String incidentStatus) {
     this.incidentStatus = incidentStatus;
     return this;
   }
@@ -118,7 +88,7 @@ public class CrewIncidentRequest   {
     this.incidentStatus = incidentStatus;
   }
 
-  public CrewIncidentRequest bedReq(String bedReq) {
+  public PassengerIncidentRequest bedReq(String bedReq) {
     this.bedReq = bedReq;
     return this;
   }
@@ -138,7 +108,7 @@ public class CrewIncidentRequest   {
     this.bedReq = bedReq;
   }
 
-  public CrewIncidentRequest notificationStatus(String notificationStatus) {
+  public PassengerIncidentRequest notificationStatus(String notificationStatus) {
     this.notificationStatus = notificationStatus;
     return this;
   }
@@ -158,13 +128,32 @@ public class CrewIncidentRequest   {
     this.notificationStatus = notificationStatus;
   }
 
-  
-  public CrewIncidentRequest symptomList(List<Symptoms> symptomList) {
+  public PassengerIncidentRequest bodyTemperature(String bodyTemperature) {
+    this.bodyTemperature = bodyTemperature;
+    return this;
+  }
+
+  /**
+   * Get bodyTemperature
+   * @return bodyTemperature
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getBodyTemperature() {
+    return bodyTemperature;
+  }
+
+  public void setBodyTemperature(String bodyTemperature) {
+    this.bodyTemperature = bodyTemperature;
+  }
+
+  public PassengerIncidentRequest symptomList(List<Symptoms> symptomList) {
     this.symptomList = symptomList;
     return this;
   }
 
-  public CrewIncidentRequest addSymptomListItem(Symptoms symptomListItem) {
+  public PassengerIncidentRequest addSymptomListItem(Symptoms symptomListItem) {
     if (this.symptomList == null) {
       this.symptomList = new ArrayList<Symptoms>();
     }
@@ -188,7 +177,7 @@ public class CrewIncidentRequest   {
     this.symptomList = symptomList;
   }
 
-  public CrewIncidentRequest hrPOCDetails(HrPOCDetails hrPOCDetails) {
+  public PassengerIncidentRequest hrPOCDetails(HrPOCDetails hrPOCDetails) {
     this.hrPOCDetails = hrPOCDetails;
     return this;
   }
@@ -209,7 +198,7 @@ public class CrewIncidentRequest   {
     this.hrPOCDetails = hrPOCDetails;
   }
 
-  public CrewIncidentRequest flightDetails(FlightDetails flightDetails) {
+  public PassengerIncidentRequest flightDetails(FlightDetails flightDetails) {
     this.flightDetails = flightDetails;
     return this;
   }
@@ -239,30 +228,32 @@ public class CrewIncidentRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CrewIncidentRequest crewIncidentRequest = (CrewIncidentRequest) o;
-    return Objects.equals(this.crewDetails, crewIncidentRequest.crewDetails) &&
-        Objects.equals(this.incidentStatus, crewIncidentRequest.incidentStatus) &&
-        Objects.equals(this.bedReq, crewIncidentRequest.bedReq) &&
-        Objects.equals(this.notificationStatus, crewIncidentRequest.notificationStatus) &&
-        Objects.equals(this.symptomList, crewIncidentRequest.symptomList) &&
-        Objects.equals(this.hrPOCDetails, crewIncidentRequest.hrPOCDetails) &&
-        Objects.equals(this.flightDetails, crewIncidentRequest.flightDetails);
+    PassengerIncidentRequest passengerIncidentRequest = (PassengerIncidentRequest) o;
+    return Objects.equals(this.passengerDetails, passengerIncidentRequest.passengerDetails) &&
+        Objects.equals(this.incidentStatus, passengerIncidentRequest.incidentStatus) &&
+        Objects.equals(this.bedReq, passengerIncidentRequest.bedReq) &&
+        Objects.equals(this.notificationStatus, passengerIncidentRequest.notificationStatus) &&
+        Objects.equals(this.bodyTemperature, passengerIncidentRequest.bodyTemperature) &&
+        Objects.equals(this.symptomList, passengerIncidentRequest.symptomList) &&
+        Objects.equals(this.hrPOCDetails, passengerIncidentRequest.hrPOCDetails) &&
+        Objects.equals(this.flightDetails, passengerIncidentRequest.flightDetails);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(crewDetails, incidentStatus, bedReq, notificationStatus, symptomList, hrPOCDetails, flightDetails);
+    return Objects.hash(passengerDetails, incidentStatus, bedReq, notificationStatus, bodyTemperature, symptomList, hrPOCDetails, flightDetails);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CrewIncidentRequest {\n");
+    sb.append("class PassengerIncidentRequest {\n");
     
-    sb.append("    crewDetails: ").append(toIndentedString(crewDetails)).append("\n");
+    sb.append("    passengerDetails: ").append(toIndentedString(passengerDetails)).append("\n");
     sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
     sb.append("    bedReq: ").append(toIndentedString(bedReq)).append("\n");
     sb.append("    notificationStatus: ").append(toIndentedString(notificationStatus)).append("\n");
+    sb.append("    bodyTemperature: ").append(toIndentedString(bodyTemperature)).append("\n");
     sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
     sb.append("    hrPOCDetails: ").append(toIndentedString(hrPOCDetails)).append("\n");
     sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
@@ -280,6 +271,5 @@ public class CrewIncidentRequest   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }
 

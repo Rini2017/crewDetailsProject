@@ -51,6 +51,10 @@ public class CrewIncidentDto {
 	private String flightNumber;
 	@Column(name="flight_origin_date")
 	private String flightOriginDate;
+	@Column(name="replaced_crew_id")
+	private Long replacedCrewId;
+	@Column(name="replaced_crew_name")
+	private String replacedCrewName;
 	@Column(name="creation_date")
 	private Timestamp creationDate;
 	@Column(name="last_update_date")
@@ -177,6 +181,18 @@ public class CrewIncidentDto {
 	}
 	public void setAddressToContact(String addressToContact) {
 		this.addressToContact = addressToContact;
+	}
+	public Long getReplacedCrewId() {
+		return replacedCrewId;
+	}
+	public void setReplacedCrewId(Long replacedCrewId) {
+		this.replacedCrewId = replacedCrewId;
+	}
+	public String getReplacedCrewName() {
+		return replacedCrewName;
+	}
+	public void setReplacedCrewName(String replacedCrewName) {
+		this.replacedCrewName = replacedCrewName;
 	}
 	
 	
