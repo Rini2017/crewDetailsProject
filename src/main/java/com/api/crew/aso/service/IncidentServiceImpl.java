@@ -56,10 +56,10 @@ public class IncidentServiceImpl implements IncidentService{
 		CrewIncidentDto crewIncidentDto = new CrewIncidentDto();
 		List<CrewIncidentDto> crewIncidentDtoList  = null;
 		CrewIncidentDto crewIncidentDtoReceive = null;
-		if(crewId == null || crewId != 0){
+		if(crewId != null || crewId != 0){
 			crewIncidentDto.setCrewPassId(crewId);
 		}
-		if(incidentId == null || incidentId != 0){
+		if(incidentId != null || incidentId != 0){
 			crewIncidentDto.setIncidentId(incidentId.intValue());
 		}
 		if(!StringUtils.isNullOrEmpty(flightNumber)){
@@ -285,7 +285,7 @@ public class IncidentServiceImpl implements IncidentService{
 			}
 			incident.setFlightDetails(flightDetailsRes);
 			incident.setDate(crewIncident.getCreationDate());
-			if(!StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){
+			if(StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){
 				HrPOCDetails hrPOCDetails = new HrPOCDetails();
 				HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewPassId());
 				if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
@@ -516,15 +516,6 @@ public class IncidentServiceImpl implements IncidentService{
 					}
 					
 				}
-				if(details.getPhoneNumber() != null){
-					newDto.setPhoneNumber(details.getPhoneNumber());
-				}
-				if(details.getEmergencyContactNumber() != null){
-					newDto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
-				}
-				if(!StringUtils.isNullOrEmpty(details.getAddressToContact())){
-					newDto.setAddressToContact(details.getAddressToContact());
-				}
 				symptoms.forEach(symptom -> {
 					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
 						newDto.setSymptomFever(symptom.getSymptomValue());
@@ -557,7 +548,7 @@ public class IncidentServiceImpl implements IncidentService{
 				crewIncidentDao.save(newDto);
 			}
 			//Save HR Contact
-			if(!StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+			if(StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
 				HRContactDto dtoContact;
 				dtoContact = hrContactDao.findByCrewId(details.getCrewId());
 				if(dtoContact == null){
@@ -723,7 +714,7 @@ public class IncidentServiceImpl implements IncidentService{
 				}
 				incident.setFlightDetails(flightDetailsRes);
 				incident.setDate(crewIncident.getCreationDate());
-				if(!StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+				if(StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
 					HrPOCDetails hrPOCDetails = new HrPOCDetails();
 					HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewPassId());
 					if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
