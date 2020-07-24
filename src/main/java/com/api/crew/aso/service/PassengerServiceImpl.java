@@ -15,11 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.api.crew.aso.dto.CrewIncidentDto;
 import com.api.crew.aso.dto.HRContactDto;
-import com.api.crew.aso.dto.HRContactPassengerDto;
 import com.api.crew.aso.dto.PassengerDto;
-import com.api.crew.aso.dto.PassengerIncidentDto;
 import com.api.crew.aso.dto.QuarantineDto;
-import com.api.crew.aso.dto.QuarantinePassengerDto;
 import com.api.crew.aso.model.CrewDetails;
 import com.api.crew.aso.model.CrewIncidentResponse;
 import com.api.crew.aso.model.FlightDetails;
@@ -29,19 +26,13 @@ import com.api.crew.aso.model.FlightRetrieveRequest;
 import com.api.crew.aso.model.FlightRetrieveResponse;
 import com.api.crew.aso.model.HrPOCDetails;
 import com.api.crew.aso.model.Incident;
-import com.api.crew.aso.model.IncidentPassenger;
 import com.api.crew.aso.model.PassengerDetails;
-import com.api.crew.aso.model.PassengerIncidentRequest;
-import com.api.crew.aso.model.PassengerIncidentResponse;
 import com.api.crew.aso.model.QuarantineDetails;
 import com.api.crew.aso.model.Response;
 import com.api.crew.aso.model.RetrieveResponse;
 import com.api.crew.aso.model.SymptomDetails;
 import com.api.crew.aso.model.Symptoms;
-import com.api.crew.aso.repository.HRPassengerContactDao;
 import com.api.crew.aso.repository.PassengerDao;
-import com.api.crew.aso.repository.PassengerIncidentDao;
-import com.api.crew.aso.repository.QuarantinePassengerDao;
 import com.mysql.cj.util.StringUtils;
 import com.opencsv.CSVReader;
 
@@ -52,14 +43,6 @@ public class PassengerServiceImpl implements PassengerService {
 	@Autowired
 	PassengerDao passengerDao;
 	
-	@Autowired
-	PassengerIncidentDao passengerIncidentDao;
-	
-	@Autowired
-	QuarantinePassengerDao quarantinePassengerDao;
-	
-	@Autowired
-	HRPassengerContactDao hrPassengerContactDao;
 	
 
 	@Override
@@ -163,303 +146,6 @@ public class PassengerServiceImpl implements PassengerService {
 		}
 		res.setResponse(resList);
 		return res;
-	}
-
-
-	@Override
-	public PassengerIncidentResponse savePassengerIncidentDetail(PassengerIncidentRequest request) {
-		PassengerIncidentResponse incidentResponse = new PassengerIncidentResponse();
-		List<IncidentPassenger> incidentList = new ArrayList<IncidentPassenger>();
-		PassengerIncidentDto newDto;
-		try{
-			//fill dto object
-			PassengerDetails details = request.getPassengerDetails();
-			List<Symptoms> symptoms = request.getSymptomList();
-			FlightDetails flightDetails = request.getFlightDetails();
-			HrPOCDetails hrPOC = request.getHrPOCDetails();
-			newDto = passengerIncidentDao.findByPassengerId(details.getPassengerId());	
-			if(newDto == null){
-				PassengerIncidentDto dto = new PassengerIncidentDto();
-				dto.setIncidentStatus("open");
-				dto.setPassengerId(details.getPassengerId());
-				dto.setPassengerName(details.getPassengerName());
-				dto.setPassengerType(details.getMemberType());
-				dto.setPassengerEmailId(details.getPassengerEmailId());
-				dto.setTicketNo(details.getTicketNo());
-				dto.setPnr(details.getPnr());
-				dto.setSeatNumber(details.getSeatnumber());
-				dto.setPhoneNumber(Long.valueOf(details.getPhoneNumber()));
-				dto.setAddressToContact(details.getAddress());
-				symptoms.forEach(symptom -> {
-					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
-						dto.setSymptomFever(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Cold")){
-						dto.setSymptomCold(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Cough")){
-						dto.setSymptomCough(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("BreathingIssue")){
-						dto.setSymptomBreath(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
-						dto.setBodyTemperature(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("WearingMask")){
-						dto.setWearingMask(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("IsolationRequired")){
-						dto.setIsolationRequired(symptom.getSymptomValue());
-					}
-				});
-				
-				dto.setArrivalStationCode(flightDetails.getArrivalStationCode());					
-				dto.setDepartureStationCode(flightDetails.getDepartureStationCode());			
-				dto.setFlightNumber(flightDetails.getFlightNumber());
-				dto.setFlightOriginDate(flightDetails.getFlightOriginDate());
-				Calendar calendar = Calendar.getInstance();
-				java.util.Date now = calendar.getTime();
-				dto.setCreationDate(new Timestamp(now.getTime()));
-				//invoke dao
-				passengerIncidentDao.save(dto);
-			}else{
-				if(!StringUtils.isNullOrEmpty(request.getIncidentStatus())){
-					newDto.setIncidentStatus(request.getIncidentStatus());
-			    }else{
-			    	newDto.setIncidentStatus("open");
-			    }
-				newDto.setPassengerId(details.getPassengerId());
-				if(!StringUtils.isNullOrEmpty(details.getPassengerName())){
-					newDto.setPassengerName(details.getPassengerName());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getMemberType())){
-					newDto.setPassengerType(details.getMemberType());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getPassengerEmailId())){
-					newDto.setPassengerEmailId(details.getPassengerEmailId());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getPassengerEmailId())){
-					newDto.setTicketNo(details.getTicketNo());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getPassengerEmailId())){
-					newDto.setPnr(details.getPnr());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getPassengerEmailId())){
-					newDto.setSeatNumber(details.getSeatnumber());
-				}
-				if(details.getPhoneNumber() != null){
-					newDto.setPhoneNumber(Long.valueOf(details.getPhoneNumber()));
-				}
-				
-				if(!StringUtils.isNullOrEmpty(details.getAddress())){
-					newDto.setAddressToContact(details.getAddress());
-				}
-				symptoms.forEach(symptom -> {
-					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
-						newDto.setSymptomFever(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Cold")){
-						newDto.setSymptomCold(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Cough")){
-						newDto.setSymptomCough(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("BreathingIssue")){
-						newDto.setSymptomBreath(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
-						newDto.setBodyTemperature(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("WearingMask")){
-						newDto.setWearingMask(symptom.getSymptomValue());
-					}else if (symptom.getSymptomName().equalsIgnoreCase("IsolationRequired")){
-						newDto.setIsolationRequired(symptom.getSymptomValue());
-					}
-				});
-				if(!StringUtils.isNullOrEmpty(flightDetails.getArrivalStationCode())){
-					newDto.setArrivalStationCode(flightDetails.getArrivalStationCode());
-				}
-				if(!StringUtils.isNullOrEmpty(flightDetails.getDepartureStationCode())){
-					newDto.setDepartureStationCode(flightDetails.getDepartureStationCode());
-				}
-				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightNumber())){
-					newDto.setFlightNumber(flightDetails.getFlightNumber());
-				}
-				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightOriginDate())){
-					newDto.setFlightOriginDate(flightDetails.getFlightOriginDate());
-				}
-				
-				passengerIncidentDao.save(newDto);
-			}
-			//Save HR Contact
-			HRContactPassengerDto dtoContact;
-			dtoContact = hrPassengerContactDao.findByPassengerId(details.getPassengerId());
-			if(dtoContact == null){
-				dtoContact = new HRContactPassengerDto();
-			}
-			dtoContact.setPassengerId(details.getPassengerId());
-			dtoContact.setHrContactNo(hrPOC.getHrPOCPhoneNo());
-			dtoContact.setHrEmailId(hrPOC.getHrPOCEmailId());
-			dtoContact.setHrName(hrPOC.getHrPOCName());
-			hrPassengerContactDao.save(dtoContact);
-			List<PassengerIncidentDto> passengerIncidentList = passengerIncidentDao.findTop10ByIncidentStatusOrderByCreationDateDesc("open");
-			passengerIncidentList.forEach(passengerIncident ->{
-				IncidentPassenger incident = new IncidentPassenger();
-				PassengerDetails passengerDetails = new PassengerDetails();
-				FlightDetails flightDetailsRes = new FlightDetails();
-				QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
-				incident.setIncidentId(Long.valueOf(passengerIncident.getIncidentId()));
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getIncidentStatus())){
-					incident.setIncidentStatus(passengerIncident.getIncidentStatus());
-				}
-				List<Symptoms> symptomList = new ArrayList<Symptoms>();
-				Symptoms symptom;
-				if(passengerIncident.getSymptomFever().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Fever");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Fever");
-					symptom.setSymptomValue("No");
-				}
-				symptomList.add(symptom);
-				if(passengerIncident.getSymptomCold().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cold");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cold");
-					symptom.setSymptomValue("No");
-				}
-				symptomList.add(symptom);
-				if(passengerIncident.getSymptomCough().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cough");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cough");
-					symptom.setSymptomValue("No");
-				}
-				symptomList.add(symptom);
-				if(passengerIncident.getSymptomBreath().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("BreathingIssue");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("BreathingIssue");
-					symptom.setSymptomValue("No");
-				}
-				symptomList.add(symptom);
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getBodyTemperature())){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Temperature");
-					symptom.setSymptomValue(passengerIncident.getBodyTemperature());
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Temperature");
-					symptom.setSymptomValue("No");
-				}
-				if(passengerIncident.getWearingMask().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("WearingMask");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("WearingMask");
-					symptom.setSymptomValue("No");
-				}
-				if(passengerIncident.getIsolationRequired().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("IsolationRequired");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("IsolationRequired");
-					symptom.setSymptomValue("No");
-				}
-				symptomList.add(symptom);
-				incident.setSymptomList(symptomList);
-				passengerDetails.setPassengerId(passengerIncident.getPassengerId());
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getPassengerName())){
-					passengerDetails.setPassengerName(passengerIncident.getPassengerName());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getPassengerType())){
-					passengerDetails.setMemberType(passengerIncident.getPassengerType());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getPassengerEmailId())){
-					passengerDetails.setPassengerEmailId(passengerIncident.getPassengerEmailId());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getPnr())){
-					passengerDetails.setPnr(String.valueOf(passengerIncident.getPnr()));
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getSeatNumber())){
-					passengerDetails.setSeatnumber(String.valueOf(passengerIncident.getSeatNumber()));
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getTicketNo())){
-					passengerDetails.setTicketNo(String.valueOf(passengerIncident.getTicketNo()));
-				}
-				if(passengerIncident.getPhoneNumber() != null){
-					passengerDetails.setPhoneNumber(String.valueOf(passengerIncident.getPhoneNumber()));
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getAddressToContact())){
-					passengerDetails.setAddress(passengerIncident.getAddressToContact());
-				}
-				incident.setPassengerDetails(passengerDetails);
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getArrivalStationCode())){
-					flightDetailsRes.setArrivalStationCode(passengerIncident.getArrivalStationCode());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getDepartureStationCode())){
-					flightDetailsRes.setDepartureStationCode(passengerIncident.getDepartureStationCode());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getFlightNumber())){
-					flightDetailsRes.setFlightNumber(passengerIncident.getFlightNumber());
-				}
-				if(!StringUtils.isNullOrEmpty(passengerIncident.getFlightOriginDate())){
-					flightDetailsRes.setFlightOriginDate(passengerIncident.getFlightOriginDate());
-				}
-				incident.setFlightDetails(flightDetailsRes);
-				incident.setDate(passengerIncident.getCreationDate());
-				HrPOCDetails hrPOCDetails = new HrPOCDetails();
-				HRContactPassengerDto contactPassengerDto = hrPassengerContactDao.findByPassengerId(passengerIncident.getPassengerId());
-				if(!StringUtils.isNullOrEmpty(contactPassengerDto.getHrEmailId())){
-					hrPOCDetails.setHrPOCEmailId(contactPassengerDto.getHrEmailId());
-				}
-				if(!StringUtils.isNullOrEmpty(contactPassengerDto.getHrName())){
-					hrPOCDetails.setHrPOCName(contactPassengerDto.getHrName());
-				}
-				if(!StringUtils.isNullOrEmpty(contactPassengerDto.getHrContactNo())){
-					hrPOCDetails.setHrPOCPhoneNo(contactPassengerDto.getHrContactNo());
-				}
-				incident.setHrPOCDetails(hrPOCDetails);
-				if(!StringUtils.isNullOrEmpty(request.getBedReq())){
-					if(request.getBedReq().equalsIgnoreCase("Yes")){
-						try{
-							Optional<QuarantinePassengerDto> quarantinePassengerDtoOptional = quarantinePassengerDao.
-									findById(passengerIncident.getPassengerId().intValue());	
-							QuarantinePassengerDto quarantineDto = quarantinePassengerDtoOptional.get();
-							if(quarantineDto != null){
-								if(!StringUtils.isNullOrEmpty(quarantineDto.getBedNo())){
-									quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-								}
-								if(!StringUtils.isNullOrEmpty(quarantineDto.getFloorNo())){
-									quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-								}
-								if(!StringUtils.isNullOrEmpty(quarantineDto.getQrCenterId())){
-									quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-								}
-								if(!StringUtils.isNullOrEmpty(quarantineDto.getRoomNo())){
-									quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-								}
-							}
-							incident.setQuarantineCentreDetails(quarantineCentreDetails);
-						}catch(Exception e){
-							e.printStackTrace();
-						}
-					}
-				}
-				incidentList.add(incident);
-			});			
-		}catch(Exception e){
-			
-		}
-		// TODO Auto-generated method stub		
-		incidentResponse.setIncidentList(incidentList);		
-		return incidentResponse;
-	  }
-	
+	}	
 
 }

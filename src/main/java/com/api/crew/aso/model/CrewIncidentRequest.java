@@ -22,6 +22,10 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T14:09:07.095Z")
 
 public class CrewIncidentRequest   {
+	
+  @JsonProperty("passengerDetails")
+  private PassengerDetails passengerDetails = null;
+	
   @JsonProperty("crewDetails")
   private CrewDetails crewDetails = null;
 
@@ -49,6 +53,28 @@ public class CrewIncidentRequest   {
 
   @JsonProperty("flightDetails")
   private FlightDetails flightDetails = null;
+  
+  
+  public CrewIncidentRequest passengerDetails(PassengerDetails passengerDetails) {
+	    this.passengerDetails = passengerDetails;
+	    return this;
+  }
+
+  /**
+   * Get passengerDetails
+   * @return passengerDetails
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public PassengerDetails getPassengerDetails() {
+    return passengerDetails;
+  }
+
+  public void setPassengerDetails(PassengerDetails passengerDetails) {
+    this.passengerDetails = passengerDetails;
+  }
 
   public CrewIncidentRequest crewDetails(CrewDetails crewDetails) {
     this.crewDetails = crewDetails;

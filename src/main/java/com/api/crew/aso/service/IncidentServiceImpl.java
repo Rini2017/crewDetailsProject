@@ -24,6 +24,7 @@ import com.api.crew.aso.model.FlightDetails;
 import com.api.crew.aso.model.HrPOCDetails;
 import com.api.crew.aso.model.Incident;
 import com.api.crew.aso.model.NotificationResponse;
+import com.api.crew.aso.model.PassengerDetails;
 import com.api.crew.aso.model.QuarantineDetails;
 import com.api.crew.aso.model.Symptoms;
 import com.api.crew.aso.repository.CrewIncidentDao;
@@ -51,11 +52,12 @@ public class IncidentServiceImpl implements IncidentService{
 	public CrewIncidentDetailResponse getCrewIncidentDetails(Long crewId, Long incidentId, String flightNumber, String date, String bedReq) {
 		// TODO Auto-generated method stub
 		CrewIncidentDetailResponse detailResponse = new CrewIncidentDetailResponse();
+		List<Incident> incidentList = new ArrayList<Incident>();
 		CrewIncidentDto crewIncidentDto = new CrewIncidentDto();
 		List<CrewIncidentDto> crewIncidentDtoList  = null;
 		CrewIncidentDto crewIncidentDtoReceive = null;
 		if(crewId == null || crewId != 0){
-			crewIncidentDto.setCrewId(crewId);
+			crewIncidentDto.setCrewPassId(crewId);
 		}
 		if(incidentId == null || incidentId != 0){
 			crewIncidentDto.setIncidentId(incidentId.intValue());
@@ -66,169 +68,266 @@ public class IncidentServiceImpl implements IncidentService{
 		if(!StringUtils.isNullOrEmpty(date)){
 			crewIncidentDto.setFlightOriginDate(date);
 		}
-		if(crewIncidentDto.getCrewId() == null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
+		if(crewIncidentDto.getCrewPassId() == null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
 				StringUtils.isNullOrEmpty(date)){
 			return null;
 		}else {
-			if(crewIncidentDto.getCrewId() != null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
+			if(crewIncidentDto.getCrewPassId() != null && crewIncidentDto.getIncidentId() == null  && StringUtils.isNullOrEmpty(flightNumber) &&
 				StringUtils.isNullOrEmpty(date)){
 				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
-				crewIncidentDtoReceive = crewIncidentDao.findByCrewId(crewIncidentDto.getCrewId());
+				crewIncidentDtoReceive = crewIncidentDao.findByCrewPassId(crewIncidentDto.getCrewPassId());
 				crewIncidentDtoList.add(crewIncidentDtoReceive);
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() == null && 
 					StringUtils.isNullOrEmpty(flightNumber) && StringUtils.isNullOrEmpty(date)){
 				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
 				crewIncidentDtoReceive = crewIncidentDao.findByIncidentId(incidentId);
 				crewIncidentDtoList.add(crewIncidentDtoReceive);
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() == null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByFlightNumber(crewIncidentDto.getFlightNumber());
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() == null && 
 					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByFlightOriginDate(crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() != null && 
 					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = new ArrayList<CrewIncidentDto>();
-				crewIncidentDtoReceive = crewIncidentDao.findByCrewIdAndIncidentId(crewIncidentDto.getCrewId(),crewIncidentDto.getIncidentId());
+				crewIncidentDtoReceive = crewIncidentDao.findByCrewPassIdAndIncidentId(crewIncidentDto.getCrewPassId(),crewIncidentDto.getIncidentId());
 				crewIncidentDtoList.add(crewIncidentDtoReceive);
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() != null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumber(crewIncidentDto.getCrewId(),crewIncidentDto.getFlightNumber());
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+				crewIncidentDtoList = crewIncidentDao.findByCrewPassIdAndFlightNumber(crewIncidentDto.getCrewPassId(),crewIncidentDto.getFlightNumber());
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() != null && 
 					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightOriginDate(crewIncidentDto.getCrewId(),crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+				crewIncidentDtoList = crewIncidentDao.findByCrewPassIdAndFlightOriginDate(crewIncidentDto.getCrewPassId(),crewIncidentDto.getFlightOriginDate());
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() == null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightNumber(incidentId,crewIncidentDto.getFlightNumber());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() == null && 
 					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightOriginDate(incidentId,crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() == null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByFlightNumberAndFlightOriginDate(crewIncidentDto.getFlightNumber(),
 						crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() != null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndCrewIdAndFlightNumber(incidentId,crewIncidentDto.getCrewId()
+				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndCrewPassIdAndFlightNumber(incidentId,crewIncidentDto.getCrewPassId()
 						,crewIncidentDto.getFlightNumber());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() == null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() == null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
 				crewIncidentDtoList = crewIncidentDao.findByIncidentIdAndFlightNumberAndFlightOriginDate(incidentId,
 						crewIncidentDto.getFlightNumber(),crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() == null  && crewIncidentDto.getCrewPassId() != null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumberAndFlightOriginDate(crewIncidentDto.getCrewId(),
+				crewIncidentDtoList = crewIncidentDao.findByCrewPassIdAndFlightNumberAndFlightOriginDate(crewIncidentDto.getCrewPassId(),
 						crewIncidentDto.getFlightNumber(), crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() != null && 
 					StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewId(),
+				crewIncidentDtoList = crewIncidentDao.findByCrewPassIdAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewPassId(),
 						incidentId, crewIncidentDto.getFlightOriginDate());
-			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewId() != null && 
+			}else if(crewIncidentDto.getIncidentId() != null  && crewIncidentDto.getCrewPassId() != null && 
 					!StringUtils.isNullOrEmpty(crewIncidentDto.getFlightNumber()) && !StringUtils.isNullOrEmpty(crewIncidentDto.getFlightOriginDate())){
-				crewIncidentDtoList = crewIncidentDao.findByCrewIdAndFlightNumberAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewId(),
+				crewIncidentDtoList = crewIncidentDao.findByCrewPassIdAndFlightNumberAndIncidentIdAndFlightOriginDate(crewIncidentDto.getCrewPassId(),
 						crewIncidentDto.getFlightNumber(),crewIncidentDto.getIncidentId(),crewIncidentDto.getFlightOriginDate());
 			}			
 			
 		}	
-		CrewDetails crewDetailsResponse = new CrewDetails();
-		if(crewIncidentDtoList != null && crewIncidentDtoList.size() > 0){
-			for(CrewIncidentDto dto : crewIncidentDtoList){
-				detailResponse.setIncidentId(Long.valueOf(dto.getIncidentId()));
-				detailResponse.setIncidentStatus(dto.getIncidentStatus());
-				detailResponse.setReplacedCrewId(dto.getReplacedCrewId());
-				detailResponse.setReplacedCrewName(dto.getReplacedCrewName());
-				detailResponse.setDate(dto.getCreationDate());
-				List<Symptoms> symptomList = new ArrayList<Symptoms>();
-				Symptoms symptom;
-				if(dto.getSymptomFever().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Fever");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Fever");
-					symptom.setSymptomValue("No");
+		crewIncidentDtoList.forEach(crewIncident ->{
+			Incident incident = new Incident();
+			PassengerDetails passDetails = new PassengerDetails();
+			CrewDetails crewDetails = new CrewDetails();
+			FlightDetails flightDetailsRes = new FlightDetails();
+			QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
+			incident.setIncidentId(Long.valueOf(crewIncident.getIncidentId()));
+			if(!StringUtils.isNullOrEmpty(crewIncident.getIncidentStatus())){
+				incident.setIncidentStatus(crewIncident.getIncidentStatus());
+			}
+			List<Symptoms> symptomList = new ArrayList<Symptoms>();
+			Symptoms symptom;
+			if(crewIncident.getSymptomFever().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("Fever");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("Fever");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getSymptomCold().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("Cold");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("Cold");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getSymptomCough().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("Cough");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("Cough");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getSymptomBreath().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("BreathingIssue");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("BreathingIssue");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getBodyTemperature().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("Temperature");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("Temperature");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getWearingMask().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("WearingMask");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("WearingMask");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			if(crewIncident.getIsolationRequired().equalsIgnoreCase("Yes")){
+				symptom = new Symptoms();
+				symptom.setSymptomName("IsolationRequired");
+				symptom.setSymptomValue("Yes");
+			}else{
+				symptom = new Symptoms();
+				symptom.setSymptomName("IsolationRequired");
+				symptom.setSymptomValue("No");
+			}
+			symptomList.add(symptom);
+			incident.setSymptomList(symptomList);
+			if(StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){					
+				incident.setReplacedCrewId(crewIncident.getReplacedCrewId());					
+				if(!StringUtils.isNullOrEmpty(crewIncident.getReplacedCrewName())){
+					incident.setReplacedCrewName(crewIncident.getReplacedCrewName());
 				}
-				symptomList.add(symptom);
-				if(dto.getSymptomCold().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cold");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cold");
-					symptom.setSymptomValue("No");
+				crewDetails.setCrewId(crewIncident.getCrewPassId());
+				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassName())){
+					crewDetails.setCrewName(crewIncident.getCrewPassName());
 				}
-				symptomList.add(symptom);
-				if(dto.getSymptomCough().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cough");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Cough");
-					symptom.setSymptomValue("No");
+				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassType())){
+					crewDetails.setCrewType(crewIncident.getCrewPassType());
 				}
-				symptomList.add(symptom);
-				if(dto.getSymptomBreath().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("BreathingIssue");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("BreathingIssue");
-					symptom.setSymptomValue("No");
+				if(!StringUtils.isNullOrEmpty(crewIncident.getEmailId())){
+					crewDetails.setCrewEmailId(crewIncident.getEmailId());
 				}
-				symptomList.add(symptom);
-				if(dto.getBodyTemperature().equalsIgnoreCase("Yes")){
-					symptom = new Symptoms();
-					symptom.setSymptomName("Temperature");
-					symptom.setSymptomValue("Yes");
-				}else{
-					symptom = new Symptoms();
-					symptom.setSymptomName("Temperature");
-					symptom.setSymptomValue("No");
+				if(crewIncident.getEmergencyContactNumber() != null){
+					crewDetails.setEmergencyContactNumber(crewIncident.getEmergencyContactNumber());
 				}
-				symptomList.add(symptom);
-				detailResponse.setSymptomList(symptomList);
-				crewDetailsResponse.setCrewEmailId(dto.getCrewEmailId());
-				crewDetailsResponse.setCrewId(dto.getCrewId());
-				crewDetailsResponse.setCrewName(dto.getCrewName());
-				crewDetailsResponse.setEmergencyContactNumber(dto.getEmergencyContactNumber());
-				crewDetailsResponse.setPhoneNumber(dto.getPhoneNumber());
-				crewDetailsResponse.setAddressToContact(dto.getAddressToContact());
-				detailResponse.setCrewDetails(crewDetailsResponse);
-				FlightDetails flightDetails = new FlightDetails();
-				flightDetails.setArrivalStationCode(dto.getArrivalStationCode());
-				flightDetails.setDepartureStationCode(dto.getDepartureStationCode());
-				flightDetails.setFlightNumber(dto.getFlightNumber());
-				flightDetails.setFlightOriginDate(dto.getFlightOriginDate());
-				detailResponse.setFlightDetails(flightDetails);	
-				if(dto.getCrewId() != null){
-					//fetch and set in hr_poc_detail table
-					HrPOCDetails hrPOCDetails = new HrPOCDetails();
-					HRContactDto contactDto = hrContactDao.findByCrewId(crewId);
+				if(!StringUtils.isNullOrEmpty(crewIncident.getFlightNumber())){
+					crewDetails.setFlightNumber(crewIncident.getFlightNumber());
+				}
+				if(crewIncident.getPhoneNumber() != null){
+					crewDetails.setPhoneNumber(crewIncident.getPhoneNumber());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getAddressToContact())){
+					crewDetails.setAddressToContact(crewIncident.getAddressToContact());
+				}
+				incident.setCrewDetails(crewDetails);
+			}else{
+				passDetails.setPassengerId(crewIncident.getCrewPassId());
+				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassName())){
+					passDetails.setPassengerName(crewIncident.getCrewPassName());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassType())){
+					passDetails.setMemberType(crewIncident.getCrewPassType());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getEmailId())){
+					passDetails.setPassengerEmailId(crewIncident.getEmailId());
+				}
+				if(crewIncident.getPhoneNumber() != null){
+					passDetails.setPhoneNumber(String.valueOf(crewIncident.getPhoneNumber()));
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getAddressToContact())){
+					passDetails.setAddress(crewIncident.getAddressToContact());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getPnr())){
+					passDetails.setPnr(crewIncident.getAddressToContact());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){
+					passDetails.setTicketNo(crewIncident.getTicketNo());
+				}
+				if(!StringUtils.isNullOrEmpty(crewIncident.getSeatNumber())){
+					passDetails.setSeatnumber(crewIncident.getSeatNumber());
+				}
+				incident.setPassengerDetails(passDetails);
+			}				
+			if(!StringUtils.isNullOrEmpty(crewIncident.getArrivalStationCode())){
+				flightDetailsRes.setArrivalStationCode(crewIncident.getArrivalStationCode());
+			}
+			if(!StringUtils.isNullOrEmpty(crewIncident.getDepartureStationCode())){
+				flightDetailsRes.setDepartureStationCode(crewIncident.getDepartureStationCode());
+			}
+			if(!StringUtils.isNullOrEmpty(crewIncident.getFlightNumber())){
+				flightDetailsRes.setFlightNumber(crewIncident.getFlightNumber());
+			}
+			if(!StringUtils.isNullOrEmpty(crewIncident.getFlightOriginDate())){
+				flightDetailsRes.setFlightOriginDate(crewIncident.getFlightOriginDate());
+			}
+			incident.setFlightDetails(flightDetailsRes);
+			incident.setDate(crewIncident.getCreationDate());
+			if(!StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){
+				HrPOCDetails hrPOCDetails = new HrPOCDetails();
+				HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewPassId());
+				if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
 					hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
+				}
+				if(!StringUtils.isNullOrEmpty(contactDto.getHrName())){
 					hrPOCDetails.setHrPOCName(contactDto.getHrName());
+				}
+				if(!StringUtils.isNullOrEmpty(contactDto.getHrContactNo())){
 					hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
-					detailResponse.setHrPOCDetails(hrPOCDetails);
-					//fetch from quarantine_bed_occupancy_details table
-					if(!StringUtils.isNullOrEmpty(bedReq)){
-						if(bedReq.equalsIgnoreCase("Yes")){
-							QuarantineDto quarantineDto = quarantineDao.
-									findByCrewId(crewId);	
-							QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
-							quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
-							quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
-							quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
-							quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
-							detailResponse.setQuarantineCentreDetails(quarantineCentreDetails);
+				}
+				incident.setHrPOCDetails(hrPOCDetails);
+			}
+			if(!StringUtils.isNullOrEmpty(bedReq)){
+				if(bedReq.equalsIgnoreCase("Yes")){
+					try{
+						Optional<QuarantineDto> quarantineDtoOptional = quarantineDao.
+								findById(crewIncident.getCrewPassId().intValue());	
+						QuarantineDto quarantineDto = quarantineDtoOptional.get();
+						if(quarantineDto != null){
+							if(!StringUtils.isNullOrEmpty(quarantineDto.getBedNo())){
+								quarantineCentreDetails.setBedNo(quarantineDto.getBedNo());
+							}
+							if(!StringUtils.isNullOrEmpty(quarantineDto.getFloorNo())){
+								quarantineCentreDetails.setFloorNo(quarantineDto.getFloorNo());
+							}
+							if(!StringUtils.isNullOrEmpty(quarantineDto.getQrCenterId())){
+								quarantineCentreDetails.setQrCenterId(quarantineDto.getQrCenterId());
+							}
+							if(!StringUtils.isNullOrEmpty(quarantineDto.getRoomNo())){
+								quarantineCentreDetails.setRoomNo(quarantineDto.getRoomNo());
+							}
 						}
+						incident.setQuarantineCentreDetails(quarantineCentreDetails);
+					}catch(Exception e){
+						e.printStackTrace();
 					}
 				}
 			}
-		}
-		
+			incidentList.add(incident);
+		});	
+		detailResponse.setIncidentList(incidentList);
 		return detailResponse;
 	}
 
@@ -257,20 +356,71 @@ public class IncidentServiceImpl implements IncidentService{
 		try{
 			//fill dto object
 			CrewDetails details = request.getCrewDetails();
+			PassengerDetails detailsPassenger = request.getPassengerDetails();
 			List<Symptoms> symptoms = request.getSymptomList();
 			FlightDetails flightDetails = request.getFlightDetails();
 			HrPOCDetails hrPOC = request.getHrPOCDetails();
-			newDto = crewIncidentDao.findByCrewId(details.getCrewId());	
+			if(StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+				newDto = crewIncidentDao.findByCrewPassId(details.getCrewId());	
+			}else{
+				newDto = crewIncidentDao.findByCrewPassId(detailsPassenger.getPassengerId());	
+			}
 			if(newDto == null){
 				CrewIncidentDto dto = new CrewIncidentDto();
 				dto.setIncidentStatus("open");
-				dto.setCrewId(details.getCrewId());
-				dto.setCrewName(details.getCrewName());
-				dto.setCrewType(details.getCrewType());
-				dto.setCrewEmailId(details.getCrewEmailId());
-				dto.setPhoneNumber(details.getPhoneNumber());
-				dto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
-				dto.setAddressToContact(details.getAddressToContact());
+				if(StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+					if(request.getReplacedCrewId() != 0){
+						dto.setReplacedCrewId(request.getReplacedCrewId());
+					}
+					if(!StringUtils.isNullOrEmpty(request.getReplacedCrewName())){
+						dto.setReplacedCrewName(request.getReplacedCrewName());
+					}
+					dto.setCrewPassId(details.getCrewId());
+					if(!StringUtils.isNullOrEmpty(details.getCrewName())){
+						dto.setCrewPassName(details.getCrewName());
+					}
+					if(!StringUtils.isNullOrEmpty(details.getCrewType())){
+						dto.setCrewPassType(details.getCrewType());
+					}
+					if(!StringUtils.isNullOrEmpty(details.getCrewEmailId())){
+						dto.setEmailId(details.getCrewEmailId());
+					}
+					if(details.getPhoneNumber() != null){
+						dto.setPhoneNumber(details.getPhoneNumber());
+					}
+					if(details.getEmergencyContactNumber() != null){
+						dto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
+					}
+					if(!StringUtils.isNullOrEmpty(details.getAddressToContact())){
+						dto.setAddressToContact(details.getAddressToContact());
+					}
+				}else{
+					dto.setCrewPassId(detailsPassenger.getPassengerId());
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPassengerName())){
+						dto.setCrewPassName(detailsPassenger.getPassengerName());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getMemberType())){
+						dto.setCrewPassType(detailsPassenger.getMemberType());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPassengerEmailId())){
+						dto.setEmailId(detailsPassenger.getPassengerEmailId());
+					}
+					if(detailsPassenger.getPhoneNumber() != null){
+						dto.setPhoneNumber(Long.valueOf(detailsPassenger.getPhoneNumber()));
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getAddress())){
+						dto.setAddressToContact(detailsPassenger.getAddress());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getTicketNo())){
+						dto.setTicketNo(detailsPassenger.getTicketNo());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getSeatnumber())){
+						dto.setSeatNumber(detailsPassenger.getSeatnumber());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPnr())){
+						dto.setPnr(detailsPassenger.getPnr());
+					}
+				}
 				symptoms.forEach(symptom -> {
 					if(symptom.getSymptomName().equalsIgnoreCase("Fever")){
 						dto.setSymptomFever(symptom.getSymptomValue());
@@ -282,15 +432,25 @@ public class IncidentServiceImpl implements IncidentService{
 						dto.setSymptomBreath(symptom.getSymptomValue());
 					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
 						dto.setBodyTemperature(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("WearingMask")){
+						dto.setWearingMask(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("IsolationRequired")){
+						dto.setIsolationRequired(symptom.getSymptomValue());
 					}
 				});
 				
-				dto.setArrivalStationCode(flightDetails.getArrivalStationCode());					
-				dto.setDepartureStationCode(flightDetails.getDepartureStationCode());			
-				dto.setFlightNumber(flightDetails.getFlightNumber());
-				dto.setFlightOriginDate(flightDetails.getFlightOriginDate());
-				dto.setReplacedCrewId(request.getReplacedCrewId());
-				dto.setReplacedCrewName(request.getReplacedCrewName());
+				if(!StringUtils.isNullOrEmpty(flightDetails.getArrivalStationCode())){
+					dto.setArrivalStationCode(flightDetails.getArrivalStationCode());
+				}
+				if(!StringUtils.isNullOrEmpty(flightDetails.getDepartureStationCode())){
+					dto.setDepartureStationCode(flightDetails.getDepartureStationCode());
+				}
+				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightNumber())){
+					dto.setFlightNumber(flightDetails.getFlightNumber());
+				}
+				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightOriginDate())){
+					dto.setFlightOriginDate(flightDetails.getFlightOriginDate());
+				}
 				Calendar calendar = Calendar.getInstance();
 				java.util.Date now = calendar.getTime();
 				dto.setCreationDate(new Timestamp(now.getTime()));
@@ -302,15 +462,59 @@ public class IncidentServiceImpl implements IncidentService{
 			    }else{
 			    	newDto.setIncidentStatus("open");
 			    }
-				newDto.setCrewId(details.getCrewId());
-				if(!StringUtils.isNullOrEmpty(details.getCrewName())){
-					newDto.setCrewName(details.getCrewName());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getCrewType())){
-					newDto.setCrewType(details.getCrewType());
-				}
-				if(!StringUtils.isNullOrEmpty(details.getCrewEmailId())){
-					newDto.setCrewEmailId(details.getCrewEmailId());
+				if(StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+					if(request.getReplacedCrewId() != 0){
+						newDto.setReplacedCrewId(request.getReplacedCrewId());
+					}
+					if(!StringUtils.isNullOrEmpty(request.getReplacedCrewName())){
+						newDto.setReplacedCrewName(request.getReplacedCrewName());
+					}
+					newDto.setCrewPassId(details.getCrewId());
+					if(!StringUtils.isNullOrEmpty(details.getCrewName())){
+						newDto.setCrewPassName(details.getCrewName());
+					}
+					if(!StringUtils.isNullOrEmpty(details.getCrewType())){
+						newDto.setCrewPassType(details.getCrewType());
+					}
+					if(!StringUtils.isNullOrEmpty(details.getCrewEmailId())){
+						newDto.setEmailId(details.getCrewEmailId());
+					}
+					if(details.getPhoneNumber() != null){
+						newDto.setPhoneNumber(details.getPhoneNumber());
+					}
+					if(details.getEmergencyContactNumber() != null){
+						newDto.setEmergencyContactNumber(details.getEmergencyContactNumber());	
+					}
+					if(!StringUtils.isNullOrEmpty(details.getAddressToContact())){
+						newDto.setAddressToContact(details.getAddressToContact());
+					}
+				}else{
+					newDto.setCrewPassId(detailsPassenger.getPassengerId());
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPassengerName())){
+						newDto.setCrewPassName(detailsPassenger.getPassengerName());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getMemberType())){
+						newDto.setCrewPassType(detailsPassenger.getMemberType());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPassengerEmailId())){
+						newDto.setEmailId(detailsPassenger.getPassengerEmailId());
+					}
+					if(detailsPassenger.getPhoneNumber() != null){
+						newDto.setPhoneNumber(Long.valueOf(detailsPassenger.getPhoneNumber()));
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getAddress())){
+						newDto.setAddressToContact(detailsPassenger.getAddress());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getTicketNo())){
+						newDto.setTicketNo(detailsPassenger.getTicketNo());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getSeatnumber())){
+						newDto.setSeatNumber(detailsPassenger.getSeatnumber());
+					}
+					if(!StringUtils.isNullOrEmpty(detailsPassenger.getPnr())){
+						newDto.setPnr(detailsPassenger.getPnr());
+					}
+					
 				}
 				if(details.getPhoneNumber() != null){
 					newDto.setPhoneNumber(details.getPhoneNumber());
@@ -332,6 +536,10 @@ public class IncidentServiceImpl implements IncidentService{
 						newDto.setSymptomBreath(symptom.getSymptomValue());
 					}else if (symptom.getSymptomName().equalsIgnoreCase("Temperature")){
 						newDto.setBodyTemperature(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("WearingMask")){
+						newDto.setWearingMask(symptom.getSymptomValue());
+					}else if (symptom.getSymptomName().equalsIgnoreCase("IsolationRequired")){
+						newDto.setIsolationRequired(symptom.getSymptomValue());
 					}
 				});
 				if(!StringUtils.isNullOrEmpty(flightDetails.getArrivalStationCode())){
@@ -346,28 +554,25 @@ public class IncidentServiceImpl implements IncidentService{
 				if(!StringUtils.isNullOrEmpty(flightDetails.getFlightOriginDate())){
 					newDto.setFlightOriginDate(flightDetails.getFlightOriginDate());
 				}
-				if(request.getReplacedCrewId() != 0){
-					newDto.setReplacedCrewId(request.getReplacedCrewId());
-				}
-				if(!StringUtils.isNullOrEmpty(request.getReplacedCrewName())){
-					newDto.setReplacedCrewName(request.getReplacedCrewName());
-				}
 				crewIncidentDao.save(newDto);
 			}
 			//Save HR Contact
-			HRContactDto dtoContact;
-			dtoContact = hrContactDao.findByCrewId(details.getCrewId());
-			if(dtoContact == null){
-				dtoContact = new HRContactDto();
+			if(!StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+				HRContactDto dtoContact;
+				dtoContact = hrContactDao.findByCrewId(details.getCrewId());
+				if(dtoContact == null){
+					dtoContact = new HRContactDto();
+				}
+				dtoContact.setCrewId(details.getCrewId());
+				dtoContact.setHrContactNo(hrPOC.getHrPOCPhoneNo());
+				dtoContact.setHrEmailId(hrPOC.getHrPOCEmailId());
+				dtoContact.setHrName(hrPOC.getHrPOCName());
+				hrContactDao.save(dtoContact);
 			}
-			dtoContact.setCrewId(details.getCrewId());
-			dtoContact.setHrContactNo(hrPOC.getHrPOCPhoneNo());
-			dtoContact.setHrEmailId(hrPOC.getHrPOCEmailId());
-			dtoContact.setHrName(hrPOC.getHrPOCName());
-			hrContactDao.save(dtoContact);
 			List<CrewIncidentDto> crewIncidentList = crewIncidentDao.findTop10ByIncidentStatusOrderByCreationDateDesc("open");
 			crewIncidentList.forEach(crewIncident ->{
 				Incident incident = new Incident();
+				PassengerDetails passDetails = new PassengerDetails();
 				CrewDetails crewDetails = new CrewDetails();
 				FlightDetails flightDetailsRes = new FlightDetails();
 				QuarantineDetails quarantineCentreDetails = new QuarantineDetails();
@@ -427,32 +632,83 @@ public class IncidentServiceImpl implements IncidentService{
 					symptom.setSymptomValue("No");
 				}
 				symptomList.add(symptom);
+				if(crewIncident.getWearingMask().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("WearingMask");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("WearingMask");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
+				if(crewIncident.getIsolationRequired().equalsIgnoreCase("Yes")){
+					symptom = new Symptoms();
+					symptom.setSymptomName("IsolationRequired");
+					symptom.setSymptomValue("Yes");
+				}else{
+					symptom = new Symptoms();
+					symptom.setSymptomName("IsolationRequired");
+					symptom.setSymptomValue("No");
+				}
+				symptomList.add(symptom);
 				incident.setSymptomList(symptomList);
-				crewDetails.setCrewId(crewIncident.getCrewId());
-				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewName())){
-					crewDetails.setCrewName(crewIncident.getCrewName());
-				}
-				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewType())){
-					crewDetails.setCrewType(crewIncident.getCrewType());
-				}
-				if(!StringUtils.isNullOrEmpty(crewIncident.getCrewEmailId())){
-					crewDetails.setCrewEmailId(crewIncident.getCrewEmailId());
-				}
-				if(crewIncident.getEmergencyContactNumber() != null){
-					crewDetails.setEmergencyContactNumber(crewIncident.getEmergencyContactNumber());
-				}
-				if(!StringUtils.isNullOrEmpty(crewIncident.getFlightNumber())){
-					crewDetails.setFlightNumber(crewIncident.getFlightNumber());
-				}
-				if(crewIncident.getPhoneNumber() != null){
-					crewDetails.setPhoneNumber(crewIncident.getPhoneNumber());
-				}
-				if(!StringUtils.isNullOrEmpty(crewIncident.getAddressToContact())){
-					crewDetails.setAddressToContact(crewIncident.getAddressToContact());
-				}
-				incident.setCrewDetails(crewDetails);
-				incident.setReplacedCrewId(crewIncident.getReplacedCrewId());
-				incident.setReplacedCrewName(crewIncident.getReplacedCrewName());
+				if(StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){					
+					incident.setReplacedCrewId(crewIncident.getReplacedCrewId());					
+					if(!StringUtils.isNullOrEmpty(crewIncident.getReplacedCrewName())){
+						incident.setReplacedCrewName(crewIncident.getReplacedCrewName());
+					}
+					crewDetails.setCrewId(crewIncident.getCrewPassId());
+					if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassName())){
+						crewDetails.setCrewName(crewIncident.getCrewPassName());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassType())){
+						crewDetails.setCrewType(crewIncident.getCrewPassType());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getEmailId())){
+						crewDetails.setCrewEmailId(crewIncident.getEmailId());
+					}
+					if(crewIncident.getEmergencyContactNumber() != null){
+						crewDetails.setEmergencyContactNumber(crewIncident.getEmergencyContactNumber());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getFlightNumber())){
+						crewDetails.setFlightNumber(crewIncident.getFlightNumber());
+					}
+					if(crewIncident.getPhoneNumber() != null){
+						crewDetails.setPhoneNumber(crewIncident.getPhoneNumber());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getAddressToContact())){
+						crewDetails.setAddressToContact(crewIncident.getAddressToContact());
+					}
+					incident.setCrewDetails(crewDetails);
+				}else{
+					passDetails.setPassengerId(crewIncident.getCrewPassId());
+					if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassName())){
+						passDetails.setPassengerName(crewIncident.getCrewPassName());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getCrewPassType())){
+						passDetails.setMemberType(crewIncident.getCrewPassType());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getEmailId())){
+						passDetails.setPassengerEmailId(crewIncident.getEmailId());
+					}
+					if(crewIncident.getPhoneNumber() != null){
+						passDetails.setPhoneNumber(String.valueOf(crewIncident.getPhoneNumber()));
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getAddressToContact())){
+						passDetails.setAddress(crewIncident.getAddressToContact());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getPnr())){
+						passDetails.setPnr(crewIncident.getAddressToContact());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getTicketNo())){
+						passDetails.setTicketNo(crewIncident.getTicketNo());
+					}
+					if(!StringUtils.isNullOrEmpty(crewIncident.getSeatNumber())){
+						passDetails.setSeatnumber(crewIncident.getSeatNumber());
+					}
+					incident.setPassengerDetails(passDetails);
+				}				
 				if(!StringUtils.isNullOrEmpty(crewIncident.getArrivalStationCode())){
 					flightDetailsRes.setArrivalStationCode(crewIncident.getArrivalStationCode());
 				}
@@ -467,23 +723,25 @@ public class IncidentServiceImpl implements IncidentService{
 				}
 				incident.setFlightDetails(flightDetailsRes);
 				incident.setDate(crewIncident.getCreationDate());
-				HrPOCDetails hrPOCDetails = new HrPOCDetails();
-				HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewId());
-				if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
-					hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
+				if(!StringUtils.isNullOrEmpty(request.getPassengerDetails().getTicketNo())){
+					HrPOCDetails hrPOCDetails = new HrPOCDetails();
+					HRContactDto contactDto = hrContactDao.findByCrewId(crewIncident.getCrewPassId());
+					if(!StringUtils.isNullOrEmpty(contactDto.getHrEmailId())){
+						hrPOCDetails.setHrPOCEmailId(contactDto.getHrEmailId());
+					}
+					if(!StringUtils.isNullOrEmpty(contactDto.getHrName())){
+						hrPOCDetails.setHrPOCName(contactDto.getHrName());
+					}
+					if(!StringUtils.isNullOrEmpty(contactDto.getHrContactNo())){
+						hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
+					}
+					incident.setHrPOCDetails(hrPOCDetails);
 				}
-				if(!StringUtils.isNullOrEmpty(contactDto.getHrName())){
-					hrPOCDetails.setHrPOCName(contactDto.getHrName());
-				}
-				if(!StringUtils.isNullOrEmpty(contactDto.getHrContactNo())){
-					hrPOCDetails.setHrPOCPhoneNo(contactDto.getHrContactNo());
-				}
-				incident.setHrPOCDetails(hrPOCDetails);
 				if(!StringUtils.isNullOrEmpty(request.getBedReq())){
 					if(request.getBedReq().equalsIgnoreCase("Yes")){
 						try{
 							Optional<QuarantineDto> quarantineDtoOptional = quarantineDao.
-									findById(crewIncident.getCrewId().intValue());	
+									findById(crewIncident.getCrewPassId().intValue());	
 							QuarantineDto quarantineDto = quarantineDtoOptional.get();
 							if(quarantineDto != null){
 								if(!StringUtils.isNullOrEmpty(quarantineDto.getBedNo())){

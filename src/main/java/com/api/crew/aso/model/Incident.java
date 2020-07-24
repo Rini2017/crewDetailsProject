@@ -44,6 +44,9 @@ public class Incident   {
   @JsonProperty("symptomList")
   @Valid
   private List<Symptoms> symptomList = null;
+  
+  @JsonProperty("passengerDetails")
+  private PassengerDetails passengerDetails = null;
 
   @JsonProperty("crewDetails")
   private CrewDetails crewDetails = null;
@@ -123,6 +126,26 @@ public class Incident   {
 
   public void setIncidentStatus(String incidentStatus) {
     this.incidentStatus = incidentStatus;
+  }
+  
+  public Incident passengerDetails(PassengerDetails passengerDetails) {
+	    this.passengerDetails = passengerDetails;
+	    return this;
+	  }
+
+  /**
+   * Get passengerDetails
+   * @return passengerDetails
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public PassengerDetails getPassengerDetails() {
+    return passengerDetails;
+  }
+
+  public void setPassengerDetails(PassengerDetails passengerDetails) {
+    this.passengerDetails = passengerDetails;
   }
 
 

@@ -25,279 +25,76 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-07-15T15:48:47.153Z")
 
 public class CrewIncidentDetailResponse   {
-  @JsonProperty("incidentId")
-  private Long incidentId = null;
+	@JsonProperty("incidentList")
+	  @Valid
+	  private List<Incident> incidentList = null;
 
-  @JsonProperty("incidentStatus")
-  private String incidentStatus = null;
-  
-  
-  @JsonProperty("replacedCrewId")
-  private Long replacedCrewId = null;
-  
-  @JsonProperty("replacedCrewName")
-  private String replacedCrewName = null;
-  
-  @JsonProperty("date")
-  private Timestamp date = null;
-
-  @JsonProperty("symptomList")
-  @Valid
-  private List<Symptoms> symptomList = null;
-
-  @JsonProperty("crewDetails")
-  private CrewDetails crewDetails = null;
-
-  @JsonProperty("flightDetails")
-  private FlightDetails flightDetails = null;
-
-  @JsonProperty("quarantineCentreDetails")
-  private QuarantineDetails quarantineCentreDetails = null;
-
-  @JsonProperty("hrPOCDetails")
-  private HrPOCDetails hrPOCDetails = null;
-  
-  
-  public CrewIncidentDetailResponse replacedCrewId(Long replacedCrewId) {
-	    this.replacedCrewId = replacedCrewId;
+	  public CrewIncidentDetailResponse incidentList(List<Incident> incidentList) {
+	    this.incidentList = incidentList;
 	    return this;
 	  }
 
-
-	public Long getReplacedCrewId() {
-		return replacedCrewId;
-	}
-	
-	public void setReplacedCrewId(Long replacedCrewId) {
-		this.replacedCrewId = replacedCrewId;
-	}
-	
-	public CrewIncidentDetailResponse replacedCrewName(String replacedCrewName) {
-	    this.replacedCrewName = replacedCrewName;
+	  public CrewIncidentDetailResponse addIncidentListItem(Incident incidentListItem) {
+	    if (this.incidentList == null) {
+	      this.incidentList = new ArrayList<Incident>();
+	    }
+	    this.incidentList.add(incidentListItem);
 	    return this;
 	  }
-	
-	public String getReplacedCrewName() {
-		return replacedCrewName;
-	}
-	
-	public void setReplacedCrewName(String replacedCrewName) {
-		this.replacedCrewName = replacedCrewName;
-	}
 
-  public CrewIncidentDetailResponse incidentId(Long incidentId) {
-    this.incidentId = incidentId;
-    return this;
-  }
+	  /**
+	   * Get incidentList
+	   * @return incidentList
+	  **/
+	  @ApiModelProperty(value = "")
 
-  /**
-   * Get incidentId
-   * @return incidentId
-  **/
-  @ApiModelProperty(value = "")
+	  @Valid
+
+	  public List<Incident> getIncidentList() {
+	    return incidentList;
+	  }
+
+	  public void setIncidentList(List<Incident> incidentList) {
+	    this.incidentList = incidentList;
+	  }
 
 
-  public Long getIncidentId() {
-    return incidentId;
-  }
+	  @Override
+	  public boolean equals(java.lang.Object o) {
+	    if (this == o) {
+	      return true;
+	    }
+	    if (o == null || getClass() != o.getClass()) {
+	      return false;
+	    }
+	    CrewIncidentDetailResponse crewIncidentResponse = (CrewIncidentDetailResponse) o;
+	    return Objects.equals(this.incidentList, crewIncidentResponse.incidentList);
+	  }
 
-  public void setIncidentId(Long incidentId) {
-    this.incidentId = incidentId;
-  }
+	  @Override
+	  public int hashCode() {
+	    return Objects.hash(incidentList);
+	  }
 
-  public CrewIncidentDetailResponse incidentStatus(String incidentStatus) {
-    this.incidentStatus = incidentStatus;
-    return this;
-  }
+	  @Override
+	  public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("class CrewIncidentResponse {\n");
+	    
+	    sb.append("    incidentList: ").append(toIndentedString(incidentList)).append("\n");
+	    sb.append("}");
+	    return sb.toString();
+	  }
 
-  /**
-   * Get incidentStatus
-   * @return incidentStatus
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getIncidentStatus() {
-    return incidentStatus;
-  }
-
-  public void setIncidentStatus(String incidentStatus) {
-    this.incidentStatus = incidentStatus;
-  }
-
- 
-
-  public CrewIncidentDetailResponse symptomList(List<Symptoms> symptomList) {
-    this.symptomList = symptomList;
-    return this;
-  }
-
-  public CrewIncidentDetailResponse addSymptomListItem(Symptoms symptomListItem) {
-    if (this.symptomList == null) {
-      this.symptomList = new ArrayList<Symptoms>();
-    }
-    this.symptomList.add(symptomListItem);
-    return this;
-  }
-
-  /**
-   * Get symptomList
-   * @return symptomList
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Symptoms> getSymptomList() {
-    return symptomList;
-  }
-
-  public void setSymptomList(List<Symptoms> symptomList) {
-    this.symptomList = symptomList;
-  }
-
-  public CrewIncidentDetailResponse crewDetails(CrewDetails crewDetails) {
-    this.crewDetails = crewDetails;
-    return this;
-  }
-
-  /**
-   * Get crewDetails
-   * @return crewDetails
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public CrewDetails getCrewDetails() {
-    return crewDetails;
-  }
-
-  public void setCrewDetails(CrewDetails crewDetails) {
-    this.crewDetails = crewDetails;
-  }
-
-  public CrewIncidentDetailResponse flightDetails(FlightDetails flightDetails) {
-    this.flightDetails = flightDetails;
-    return this;
-  }
-
-  /**
-   * Get flightDetails
-   * @return flightDetails
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public FlightDetails getFlightDetails() {
-    return flightDetails;
-  }
-
-  public void setFlightDetails(FlightDetails flightDetails) {
-    this.flightDetails = flightDetails;
-  }
-
-  public CrewIncidentDetailResponse quarantineCentreDetails(QuarantineDetails quarantineCentreDetails) {
-    this.quarantineCentreDetails = quarantineCentreDetails;
-    return this;
-  }
-
-  /**
-   * Get quarantineCentreDetails
-   * @return quarantineCentreDetails
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public QuarantineDetails getQuarantineCentreDetails() {
-    return quarantineCentreDetails;
-  }
-
-  public void setQuarantineCentreDetails(QuarantineDetails quarantineCentreDetails) {
-    this.quarantineCentreDetails = quarantineCentreDetails;
-  }
-
-  public CrewIncidentDetailResponse hrPOCDetails(HrPOCDetails hrPOCDetails) {
-    this.hrPOCDetails = hrPOCDetails;
-    return this;
-  }
-
-  /**
-   * Get hrPOCDetails
-   * @return hrPOCDetails
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public HrPOCDetails getHrPOCDetails() {
-    return hrPOCDetails;
-  }
-
-  public void setHrPOCDetails(HrPOCDetails hrPOCDetails) {
-    this.hrPOCDetails = hrPOCDetails;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    CrewIncidentDetailResponse crewIncidentDetailResponse = (CrewIncidentDetailResponse) o;
-    return Objects.equals(this.incidentId, crewIncidentDetailResponse.incidentId) &&
-        Objects.equals(this.incidentStatus, crewIncidentDetailResponse.incidentStatus) &&
-        Objects.equals(this.symptomList, crewIncidentDetailResponse.symptomList) &&
-        Objects.equals(this.crewDetails, crewIncidentDetailResponse.crewDetails) &&
-        Objects.equals(this.flightDetails, crewIncidentDetailResponse.flightDetails) &&
-        Objects.equals(this.quarantineCentreDetails, crewIncidentDetailResponse.quarantineCentreDetails) &&
-        Objects.equals(this.hrPOCDetails, crewIncidentDetailResponse.hrPOCDetails);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(incidentId, incidentStatus, symptomList, crewDetails, flightDetails, quarantineCentreDetails, hrPOCDetails);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class CrewIncidentDetailResponse {\n");
-    
-    sb.append("    incidentId: ").append(toIndentedString(incidentId)).append("\n");
-    sb.append("    incidentStatus: ").append(toIndentedString(incidentStatus)).append("\n");
-    sb.append("    symptomList: ").append(toIndentedString(symptomList)).append("\n");
-    sb.append("    crewDetails: ").append(toIndentedString(crewDetails)).append("\n");
-    sb.append("    flightDetails: ").append(toIndentedString(flightDetails)).append("\n");
-    sb.append("    quarantineCentreDetails: ").append(toIndentedString(quarantineCentreDetails)).append("\n");
-    sb.append("    hrPOCDetails: ").append(toIndentedString(hrPOCDetails)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-  
-  public Timestamp getDate() {
-		return date;
-	}
-
-
-	public void setDate(Timestamp date) {
-		this.date = date;
-	}
+	  /**
+	   * Convert the given object to string with each line indented by 4 spaces
+	   * (except the first line).
+	   */
+	  private String toIndentedString(java.lang.Object o) {
+	    if (o == null) {
+	      return "null";
+	    }
+	    return o.toString().replace("\n", "\n    ");
+	  }
 }
 

@@ -9,10 +9,10 @@ import com.api.crew.aso.model.FlightRequest;
 import com.api.crew.aso.model.FlightResponse;
 import com.api.crew.aso.model.FlightRetrieveRequest;
 import com.api.crew.aso.model.FlightRetrieveResponse;
-import com.api.crew.aso.model.PassengerIncidentRequest;
+
 
 import io.swagger.annotations.*;
-import com.api.crew.aso.model.PassengerIncidentResponse;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -57,15 +57,4 @@ public interface PassengerApi {
         method = RequestMethod.POST)
     ResponseEntity<FlightRetrieveResponse> retrievePassenger(@ApiParam(value = "Passenger Details" ,required=true )  @Valid @RequestBody FlightRetrieveRequest body);
 
-    
-    @ApiOperation(value = "", nickname = "savePassengerIncidentDetail", notes = "", response = PassengerIncidentResponse.class, tags={ "savePassengerIncidentDetail", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = PassengerIncidentResponse.class),
-        @ApiResponse(code = 400, message = "Invalid FlightNumber supplied"),
-        @ApiResponse(code = 404, message = "Flight not found") })
-    @RequestMapping(value = "/incident/passenger/update",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<PassengerIncidentResponse> savePassengerIncidentDetail(@ApiParam(value = "Incident Details" ,required=true )  @Valid @RequestBody PassengerIncidentRequest body);
 }

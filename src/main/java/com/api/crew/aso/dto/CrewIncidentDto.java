@@ -17,14 +17,20 @@ public class CrewIncidentDto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="incident_id")
 	private Integer incidentId;
-	@Column(name="crew_id")
-	private Long crewId;
-	@Column(name="crew_name")
-	private String crewName;
-	@Column(name="crew_type")
-	private String crewType;
-	@Column(name="crew_email_id")
-	private String crewEmailId;
+	@Column(name="crew_pass_id")
+	private Long crewPassId;
+	@Column(name="crew_pass_name")
+	private String crewPassName;
+	@Column(name="crew_pass_type")
+	private String crewPassType;
+	@Column(name="ticket_no")	
+	private String ticketNo;
+	@Column(name="seat_number")
+	private String seatNumber;
+	@Column(name="pnr")
+	private String pnr;
+	@Column(name="email_id")
+	private String emailId;
 	@Column(name="ph_no")
 	private Long phoneNumber;
 	@Column(name="emergency_contact_no")
@@ -43,10 +49,16 @@ public class CrewIncidentDto {
 	private String symptomCough;
 	@Column(name="symptom_breath")
 	private String symptomBreath;
+	@Column(name="wearing_mask")
+	private String wearingMask;
+	@Column(name="isolation_required")
+	private String isolationRequired;
 	@Column(name="arrival_station_code")
 	private String arrivalStationCode;
 	@Column(name="departure_station_code")
 	private String departureStationCode;
+	@Column(name="comments")
+	private String comments;
 	@Column(name="flight_number")
 	private String flightNumber;
 	@Column(name="flight_origin_date")
@@ -67,30 +79,7 @@ public class CrewIncidentDto {
 	public void setIncidentId(Integer incidentId) {
 		this.incidentId = incidentId;
 	}
-	public Long getCrewId() {
-		return crewId;
-	}
-	public void setCrewId(Long crewId) {
-		this.crewId = crewId;
-	}
-	public String getCrewName() {
-		return crewName;
-	}
-	public void setCrewName(String crewName) {
-		this.crewName = crewName;
-	}
-	public String getCrewType() {
-		return crewType;
-	}
-	public void setCrewType(String crewType) {
-		this.crewType = crewType;
-	}
-	public String getCrewEmailId() {
-		return crewEmailId;
-	}
-	public void setCrewEmailId(String crewEmailId) {
-		this.crewEmailId = crewEmailId;
-	}
+	
 	public Long getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -193,6 +182,66 @@ public class CrewIncidentDto {
 	}
 	public void setReplacedCrewName(String replacedCrewName) {
 		this.replacedCrewName = replacedCrewName;
+	}
+	public Long getCrewPassId() {
+		return crewPassId;
+	}
+	public void setCrewPassId(Long crewPassId) {
+		this.crewPassId = crewPassId;
+	}
+	public String getCrewPassName() {
+		return crewPassName;
+	}
+	public void setCrewPassName(String crewPassName) {
+		this.crewPassName = crewPassName;
+	}
+	public String getCrewPassType() {
+		return crewPassType;
+	}
+	public void setCrewPassType(String crewPassType) {
+		this.crewPassType = crewPassType;
+	}
+	public String getTicketNo() {
+		return ticketNo;
+	}
+	public void setTicketNo(String ticketNo) {
+		this.ticketNo = ticketNo;
+	}
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+	public String getPnr() {
+		return pnr;
+	}
+	public void setPnr(String pnr) {
+		this.pnr = pnr;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+	public String getWearingMask() {
+		return wearingMask;
+	}
+	public void setWearingMask(String wearingMask) {
+		this.wearingMask = wearingMask;
+	}
+	public String getIsolationRequired() {
+		return isolationRequired;
+	}
+	public void setIsolationRequired(String isolationRequired) {
+		this.isolationRequired = isolationRequired;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 	
 	

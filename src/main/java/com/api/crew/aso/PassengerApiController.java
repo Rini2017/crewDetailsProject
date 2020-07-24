@@ -4,8 +4,6 @@ import com.api.crew.aso.model.FlightRequest;
 import com.api.crew.aso.model.FlightResponse;
 import com.api.crew.aso.model.FlightRetrieveRequest;
 import com.api.crew.aso.model.FlightRetrieveResponse;
-import com.api.crew.aso.model.PassengerIncidentRequest;
-import com.api.crew.aso.model.PassengerIncidentResponse;
 import com.api.crew.aso.service.PassengerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -76,20 +74,6 @@ public class PassengerApiController implements PassengerApi {
 
         return new ResponseEntity<>(retrieveRes,HttpStatus.OK);
     }
-    
-    public ResponseEntity<PassengerIncidentResponse> savePassengerIncidentDetail(@ApiParam(value = "Incident Details" ,required=true )  @Valid @RequestBody PassengerIncidentRequest body) {
-        String accept = request.getHeader("Accept");
-        PassengerIncidentResponse res = new PassengerIncidentResponse();
-        if (accept != null && accept.contains("application/json")) {
-            try {
-            	res = service.savePassengerIncidentDetail(body);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<PassengerIncidentResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(res,HttpStatus.OK);
-    }
+  
 
 }
