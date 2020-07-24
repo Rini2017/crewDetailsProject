@@ -56,10 +56,10 @@ public class IncidentServiceImpl implements IncidentService{
 		CrewIncidentDto crewIncidentDto = new CrewIncidentDto();
 		List<CrewIncidentDto> crewIncidentDtoList  = null;
 		CrewIncidentDto crewIncidentDtoReceive = null;
-		if(crewId != null || crewId != 0){
+		if(crewId != null && crewId != 0){
 			crewIncidentDto.setCrewPassId(crewId);
 		}
-		if(incidentId != null || incidentId != 0){
+		if(incidentId != null && incidentId != 0){
 			crewIncidentDto.setIncidentId(incidentId.intValue());
 		}
 		if(!StringUtils.isNullOrEmpty(flightNumber)){
